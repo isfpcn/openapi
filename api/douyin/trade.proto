@@ -1,0 +1,469 @@
+syntax = "proto3";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package douyin;
+
+option go_package = "./api/douyin;douyin";
+
+message MerchantAuditCallbackRequest{
+  //小程序appid
+  string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+  //开发者侧退款单号，长度 <= 64 byte
+  string out_refund_no = 2 [(gogoproto.moretags) = 'form:"out_refund_no" validate:"required"'];
+  //审核状态  1：同意退款 2：不同意退款
+  int64 refund_audit_status = 3 [(gogoproto.moretags) = 'form:"refund_audit_status" validate:"required"'];
+  //不同意退款信息(不同意退款时必填)，长度 <= 512 byte
+  string deny_message = 4 [(gogoproto.moretags) = 'form:"deny_message"'];
+}
+
+message MerchantAuditCallbackResponse{
+  //抖音错误码
+  int64 err_no = 1;
+  //抖音错误信息
+  string  err_tips = 2;
+  //log
+  message Resp{
+    string logid = 1;
+  }
+}
+
+
+message CreateRefundRequest{
+  //小程序appid
+  string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+  //开发者侧订单号，长度 <= 64 byte
+  string  out_order_no = 2 [(gogoproto.moretags) = 'form:"out_order_no" validate:"required"'];
+  //开发者侧退款单号，长度 <= 64 byte
+  string  out_refund_no = 3 [(gogoproto.moretags) = 'form:"out_refund_no" validate:"required"'];
+  //开发者自定义透传字段，不支持二进制，长度 <= 2048 byte
+  string  cp_extra = 4 [(gogoproto.moretags) = 'form:"cp_extra"'];
+  //退款单的跳转的 schema
+  OrderEntrySchema order_entry_schema = 5 [(gogoproto.moretags) = 'form:"order_entry_schema" validate:"required"'];
+  //退款结果通知地址，必须是 HTTPS 类型，若不填，默认使用在抖音开放平台-小程序应用详情-能力-支付页面设置的支付回调地址。
+  string  notify_url = 6 [(gogoproto.moretags) = 'form:"notify_url"'];
+  //需要发起退款的商品单信息，数组长度<100
+  //注意：交易系统订单必传
+  repeated ItemOrderDetail  item_order_detail = 7 [(gogoproto.moretags) = 'form:"item_order_detail"'];
+  //退款总金额，单位分   担保交易订单必传     交易系统订单不能传该字段
+  int64  refund_total_amount = 8 [(gogoproto.moretags) = 'form:"refund_total_amount"'];
+}
+
+message OrderEntrySchema{
+  //订单详情页路径，没有前导的/，该字段不能为空，长度 <= 512byte
+  string path = 1 [(gogoproto.moretags) = 'form:"path" validate:"required"'];
+  //路径参数，自定义的 json 结构，序列化成字符串存入该字段，平台不限制，但是写入的内容需要能够保证生成访问订单详情的 schema 能正确跳转到小程序内部的订单详情页，长度 <= 512byte
+  string params = 2 [(gogoproto.moretags) = 'form:"params"'];
+}
+
+
+message CreateREfundResponse{
+  //抖音错误码
+  int64 err_no = 1;
+  //抖音错误信息
+  string  err_tips = 2;
+  //log
+  message Resp{
+    string logid = 1;
+  }
+  Resp resp_extra = 3;
+  CreateREfundData data = 4;
+}
+
+message CreateREfundData{
+  //抖音开放平台交易系统内部退款单号
+  string refund_id = 1;
+  //退款审核的最后期限，13 位 unix 时间戳，精度：毫秒 通常是3天(从退款发起时间开始算)
+  int64 refund_audit_deadline = 2;
+}
+
+
+
+message QueryRefundRequest{
+  //refund_id , out_refund_no , order_id 三选一，不能都不选。
+  //order_id维度的不兼容老退款单查询，只支持查询交易系统的退款。查询返回的结果数限制50条
+  //抖音开平内部交易退款单号，长度 <=  64byte
+  string refund_id = 1 [(gogoproto.moretags) = 'form:"refund_id"'];
+  //开发者系统生成的退款单号，长度 <=  64byte
+  string out_refund_no = 2 [(gogoproto.moretags) = 'form:"refund_id"'];
+  //抖音开平内部交易订单号，  长度 <=  64byte
+  string order_id = 3 [(gogoproto.moretags) = 'form:"refund_id"'];
+  //小程序appid
+  string  appid = 4 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+}
+
+message QueryRefundResponse{
+  //抖音错误码
+  int64 err_no = 1;
+  //抖音错误信息
+  string  err_tips = 2;
+  //log
+  message Resp{
+    string logid = 1;
+  }
+  Resp resp_extra = 3;
+  QueryRefundData data = 4;
+}
+
+message QueryRefundData{
+  repeated RefundList refund_list = 1;
+}
+
+message RefundList{
+  //系统退款单号，开放平台生成的退款单号
+  string  refund_id = 1;
+  //开发者系统生成的退款单号，与抖音开平退款单号 refund_id 唯一关联
+  string out_refund_no = 2;
+  //退款金额，单位[分]
+  int64 refund_total_amount = 3;
+  //退款状态 退款中- PROCESSING 已退款- SUCCESS 退款失败- FAIL
+  string refund_status = 4;
+  //退款时间，13 位毫秒时间戳，只有已退款才有退款时间
+  int64 refund_at = 5;
+  //退款结果信息，非商家拒绝退款导致的退款失败，可以通过该字段了解退款失败原因
+  string message = 6;
+  //系统订单信息，开放平台生成的订单号
+  string order_id = 7;
+  //商品单信息 (交易系统订单退款才有的信息)
+  repeated ItemOrderDetail item_order_detail = 8;
+  //退款审核信息 (交易系统订单退款才有的信息)
+  MerchantAuditDetail  merchant_audit_detail = 9;
+  //退款创建时间，13 位毫秒时间戳
+  int64 create_at = 10;
+  //退款来源，仅交易2.0退款有来源，老的担保交易/1.0订单可能没有记录来源
+  //1: 用户发起退款
+  //2: 开放者发起退款
+  //3: 自动退款
+  //4: 抖音客服退款
+  //5: 预约失败自动发起退款
+  //6: 开发者拒绝接单退款
+  //7: 后约单触发先买单退款
+  int64 refund_source = 11;
+
+}
+
+message MerchantAuditDetail{
+  //退款审核的最后期限，过期无需审核，自动退款，13 位 unix 时间戳，精度：毫秒
+  int64 refund_audit_deadline = 1;
+  //退款审核状态：
+  //INIT：初始化
+  //TOAUDIT：待审核
+  //AGREE：同意
+  //DENY：拒绝
+  //OVERTIME：超时未审核自动同意
+  string audit_status = 2;
+  //不同意退款信息，长度 <= 512 byte
+  string deny_message = 3;
+
+}
+
+message ItemOrderDetail {
+  //抖音开平侧的商品单号
+  string item_order_id = 1;
+  //该商品单退款金额，单位[分]
+  int64 refund_amount = 2;
+}
+
+
+
+
+message QuerySettleRequest{
+  //以上 4 个参数选填一个，查询优先级：settle_id > order_id > out_settle_no > out_order_no。例如：请求填写了settle_id 和 order_id，服务只会按 settle_id 来查询，忽略 order_id 。如果未查询到结果，会返回空数组。
+  //注意：对于担保交易订单，如果需要根据 order_id/out_order_no 查询订单的分账记录，建议使用 order_id（抖音开平侧支付单 id 查询），若使用 out_order_no 可能存在查询不到的情况。
+  //开发者侧订单 id，长度 <= 64 字节
+  string out_order_no = 1 [(gogoproto.moretags) = 'form:"out_order_no"'];
+  //开发者侧分账单 id，长度 <= 64字节
+  string out_settle_no = 2 [(gogoproto.moretags) = 'form:"out_settle_no"'];
+  //抖音开平侧订单 id，长度 <= 64字节
+  string order_id = 3 [(gogoproto.moretags) = 'form:"order_id"'];
+  //抖音开平侧分账单 id，长度 <= 64字节
+  string settle_id = 4 [(gogoproto.moretags) = 'form:"settle_id"'];
+  //小程序appid
+  string  appid = 5 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+}
+message QuerySettleResponse{
+  //抖音错误码
+  int64 err_no = 1;
+  //抖音错误信息
+  string  err_tips = 2;
+  //log
+  message Resp{
+    string logid = 1;
+  }
+  Resp resp_extra = 3;
+  QuerySettleData data = 4;
+}
+
+message QuerySettleData{
+  //开发者侧交易订单 id，长度 <= 64 字节，由数字、ASCII 字符组成
+  string out_order_no = 1;
+  //开发者侧分账单 id，长度 <= 64字节，由数字、ASCII 字符组成
+  string out_settle_no = 2;
+  //抖音开平侧交易订单 id，长度 <= 64 字节，由数字、ASCII 字符组成
+  string order_id = 3;
+  //抖音开平侧分账单id，长度 <= 64 字节，由数字、ASCII 字符组成
+  string settle_id = 4;
+  //抖音开平侧item单 id，长度 <= 64 字节，由数字、ASCII 字符组成，按券分账时该字段不为空
+  string item_order_id = 5;
+  //分账金额，单位分
+  int64 settle_amount = 6;
+  //分账状态：INIT：初始化 PROCESSING：处理中 SUCCESS：处理成功 FAIL：处理失败
+  string settle_status = 7;
+  //分账详情
+  string settle_detail = 8;
+  //分账时间，13 位时间戳，单位毫秒
+  int64 settle_time = 9;
+  //手续费，单位分
+  int64 rake = 10;
+  //佣金，单位分
+  int64 commission = 11;
+  //开发者自定义透传字段，长度 <= 2048 字节，不支持二进制数据
+  string cp_extra = 12;
+  //用于退分账场景，对应退分账接口文档中settle_no，长度<= 64字节
+  string inner_settle_id = 13;
+}
+
+
+message QueryOrderRequest{
+  //order_id 与 out_order_no 二选一 抖音开平内部交易订单号，该单号通过预下单回调传给开发者服务，长度 < 64byte。
+  string order_id = 1 [(gogoproto.moretags) = 'form:"order_id"'];
+  //开发者系统生成的订单号，与唯一 order_id 关联，长度 < 64byte
+  string out_order_no = 2 [(gogoproto.moretags) = 'form:"out_order_no"'];
+  //小程序appid
+  string  appid = 3 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+}
+
+message  QueryOrderResponse{
+  //抖音错误码
+  int64 err_no = 1;
+  //抖音错误信息
+  string  err_tips = 2;
+  //log
+  message Resp{
+    string logid = 1;
+  }
+  Resp resp_extra = 3;
+  QuqeyOrderData data = 4;
+
+}
+
+message QuqeyOrderData{
+  //抖音开平侧订单号
+  string order_id = 1;
+  //开发者侧订单号，与 order_id 一一对应
+  string out_order_no = 2;
+  //已退款金额，单位分
+  int64 refund_amount = 3;
+  //已分账金额，单位分
+  int64 settle_amount = 4;
+  //订单实际支付金额，单位[分]
+  int64 total_fee = 5;
+  //订单状态， INIT： 初始状态 PROCESS： 订单处理中 SUCCESS：成功 FAIL：失败 TIMEOUT：用户超时未支付
+  string order_status = 6;
+  //支付时间，格式：2021-12-12 00:00:00
+  string pay_time = 7;
+  //支付渠道枚举 1：微信， 2：支付宝 10：抖音支付
+  int64 pay_channel = 8;
+  //渠道支付单号，如微信的支付单号
+  string channel_pay_id = 9;
+  //卖家商户号 id
+  string seller_uid = 10;
+  //视频id
+  string item_id = 11;
+  //预下单时开发者定义的透传信息
+  string cp_extra = 12;
+  //结果描述信息，如失败原因
+  string message = 13;
+  //担保支付单 id
+  string payment_order_id = 14;
+  //订单核销类型：
+  //0: 非闭环核销，开发者自行处理券码生成及展示，通过 push_delivery 接口推送核销状态。
+  //1: 闭环核销，开平负责生券，开发者使用核销组件展示，使用验券准备和验券接口核销。
+  int64 delivery_type = 15;
+}
+
+
+
+message QueryCpsRequest{
+  //order_id 与 out_order_no 二选一 抖音开平内部交易订单号，该单号通过预下单回调传给开发者服务，长度 < 64byte。
+  string order_id = 1 [(gogoproto.moretags) = 'form:"order_id"'];
+  //开发者系统生成的订单号，与唯一 order_id 关联，长度 < 64byte
+  string out_order_no = 2 [(gogoproto.moretags) = 'form:"out_order_no"'];
+  //小程序appid
+  string  appid = 3 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+}
+
+message QueryCpsResponse{
+  //抖音错误码
+  int64 err_no = 1;
+  //抖音错误信息
+  string  err_tips = 2;
+  //log
+  message resp{
+    string logid = 1;
+  }
+  resp resp_extra = 3;
+  //CPS 订单相关信息
+  Data data = 4;
+
+}
+
+message Data{
+  //抖音开平侧订单号
+  string order_id = 1;
+  //开发者侧订单号，与 order_id一一对应
+  string out_order_no = 2;
+  //CPS 订单支付相关信息
+  PaymentInfo payment_info = 3;
+  //CPS 相关信息
+  CpsInfo cps_info = 4;
+  //CPS 订单已退款记录信息
+  string refund_info = 5;
+  //CPS 订单已核销记录信息
+  string delivery_info = 6;
+}
+
+message PaymentInfo{
+  //订单实际支付金额，单位分
+  int64 total_fee = 1;
+  //订单状态， INIT：初始状态 PROCESS：订单处理中 SUCCESS：成功 FAIL：失败 TIMEOUT：用户超时未支付
+  string order_status = 2;
+  //支付时间，格式：2021-12-12 00:00:00
+  string pay_time = 3;
+  //支付渠道枚举：//1：微信，//2：支付宝//10: 抖音支付
+  int64 pay_channel = 4;
+  //渠道支付单号，如微信的支付单号
+  int64 channel_pay_id = 5;
+  //卖家商户号 id
+  int64 seller_uid = 6;
+  //预下单时开发者定义的透传信息
+  int64 cp_extra = 7;
+  //结果描述信息，如失败原因
+  int64 message = 8;
+}
+
+message CpsInfo{
+  //订单总佣金，单位分
+  int64 total_commission_amount = 1;
+  //订单 CPS 信息。
+  //对于交易模板 1.0 和担保支付订单，Array 长度为 1
+  repeated CpsItemList cps_item_list = 2;
+}
+
+message CpsItemList{
+  //分佣比例，万分位
+  int64 commission_rate = 1;
+  //佣金，单位分
+  int64 commission_amount = 2;
+  //分佣类型：
+  //
+  //1：短视频
+  //2：直播间
+  int64 source_type = 3;
+  //短视频/直播间 ID
+  int64 item_id = 4;
+  //售价，单位分
+  int64 sell_amount = 5;
+  //CPS 订单状态，交易系统下为子单状态
+  //
+  //0：未支付，
+  //1：已支付(待使用)；
+  //2：已退款(不分佣)；
+  //3：已核销(已分佣)
+  int64 status = 6;
+  //抖音开平侧的商品单号，只存在交易系统
+  string item_order_id = 7;
+  //达人抖音昵称
+  string commission_user_nickname = 8;
+  //达人抖音号
+  string commission_user_douyinid = 9;
+}
+
+message RefundInfo{
+  //订单退款总金额，单位分，没有已退款记录，为 0
+  int64 total_refund_amount = 1;
+  //订单已退款详细信息，如果没有已退款记录，为 null
+  //对于交易模板 1.0 和担保支付订单，为整单退款记录
+  //对于交易系统，为商品单退款记录
+  repeated RefundItems refund_items = 2;
+}
+
+message RefundItems{
+  //开发者系统生成的退款单号，与抖音开平退款单号 refund_id 唯一关联
+  string out_refund_no = 1;
+  //退款金额，单位分
+  int64 refund_amount = 2;
+  //显示退款状态，默认“已退款”
+  string refund_status = 3;
+  //退款时间，13 位毫秒时间戳，只有已退款才有退款时间
+  int64 refund_at = 4;
+  //抖音开平侧的商品单号，只存在交易系统
+  string item_order_id = 5;
+}
+
+message DeliveryInfo{
+  //订单核销总金额，单位分，没有核销记录，为 0。
+  int64 total_delivery_amount = 1;
+  //订单核销详细信息，如果没有核销记录，为 null。
+  //对于交易模板 1.0 和担保支付订单，为整单核销记录。
+  //对于交易系统，为商品单核销记录。
+  repeated DeliveryItems delivery_items = 2;
+}
+
+message DeliveryItems{
+  //核销金额，单位分
+  int64 delivery_amount = 1;
+  //显示核销状态，默认“已核销”
+  string delivery_status = 2;
+  //核销时间，13 位毫秒时间戳
+  int64 delivery_at = 3;
+  //抖音开平侧的商品单号，只存在交易系统中
+  string item_order_id = 4;
+}
+
+
+//抖音-交易系统
+service DouyinTrade{
+  //同步退款审核结果
+  rpc MerchantAuditCallback(MerchantAuditCallbackRequest) returns(MerchantAuditCallbackResponse){
+    option(google.api.http) = {
+      post:"/douyin/trade/v2/merchant_audit_callback"
+    };
+  }
+
+  //发起退款
+  rpc CreateRefund(CreateRefundRequest) returns (CreateREfundResponse) {
+    option (google.api.http) = {
+      post:"/douyin/trade/v2/create_refund"
+    };
+  }
+
+  //查询退款
+  rpc QueryRefund(QueryRefundRequest) returns(QueryRefundResponse){
+    option (google.api.http) = {
+      post:"/douyin/trade/v2/query_refund"
+    };
+  }
+
+  ////查询分账 开发者可通过此接口查询订单的分账记录。
+  rpc QuerySettle(QuerySettleRequest) returns (QuerySettleResponse) {
+    option (google.api.http) = {
+      post: "/douyin/trade/v2/query_settle"
+    };
+  }
+
+  //查询订单信息 查询异常订单的支付状态，确认订单是否交易成功。
+  rpc QueryOrder(QueryOrderRequest) returns (QueryOrderResponse) {
+    option (google.api.http) = {
+      post: "/douyin/trade/v2/query_order"
+    };
+  }
+
+  //查询订单CPS信息。可用于判断订单是否为 CPS 订单。返回数据包含订单的支付、CPS、退款、核销等信息。
+  rpc QueryCps(QueryCpsRequest) returns (QueryCpsResponse) {
+    option (google.api.http) = {
+      post: "/douyin/trade/v2/query_cps"
+    };
+  }
+}

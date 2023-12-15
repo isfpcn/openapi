@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package douyin;
+
+option go_package = "./api/douyin;douyin";
+
+message GetClientTokenRequest{
+  //是应用唯一标识 aw05az2qjv******
+  string client_key = 1[(gogoproto.moretags) = 'form:"client_key" validate:"required"'];
+}
+
+message GetClientTokenResponse{
+  string message = 1;
+  message Data {
+    //获取的 access_token
+    string  access_token = 1;
+    //access_token 有效时间，单位：秒
+    int64 expires_in = 2;
+    //error_code
+    int64 error_code = 3  [(gogoproto.jsontag) = 'error_code'];
+    //错误表述
+    string description = 4 [(gogoproto.jsontag) = 'description'];
+  }
+  Data data = 2;
+}
+
+//抖音-交易client token调用凭证
+service DouyinClientToken {
+  //client_token 用于不需要用户授权就可以调用的接口。client_token 的有效时间为 2 个小时，重复获取 client_token 后会使上次的 client_token 失效（但有 5 分钟的缓冲时间，连续多次获取 client_token 只会保留最新的两个 client_token）
+  rpc GetClientToken (GetClientTokenRequest) returns (GetClientTokenResponse) {
+    option (google.api.http) = {
+      post: "/douyin/oauth/client_token"
+    };
+  }
+}

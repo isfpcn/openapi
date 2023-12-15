@@ -1,0 +1,648 @@
+syntax = "proto3";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package douyin;
+
+option go_package = "./api/douyin;douyin";
+
+
+message UploadResourceRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//资源类型，详见下方
+	/**
+	商品详情图片 1 <= 50MB jpeg、jpg、png
+	商品视频履约内容 2 <= 5GB mp4、mpeg、mov
+	商品音频履约内容 3 <= 5GB mp3、wav、m4a
+	商品图片履约内容 4 <= 50MB jpeg、jpg、png
+	商品pdf履约内容 5 <= 5GB pdf
+	商品office履约内容 6 <= 5GB doc、docx、xls、xlsx、ppt、pptx
+
+	老师身份证照片 21 <= 50MB jpeg、jpg、png
+	机构法人身份证照 22 <= 50MB jpeg、jpg、png
+ 	老师资质照 23 <= 50MB jpeg、jpg、png
+	机构资质照片 24 <= 50MB jpeg、jpg、png
+	机构logo照片 25 <= 50MB jpeg、jpg、png
+
+	课程展示图片 31 <= 5MB jpeg、jpg、png
+	老师展示图片 32 <= 5MB jpeg、jpg、png
+	机构展示图片 33 <= 5MB jpeg、jpg、png
+	 */
+	int32 resource_type = 3 [(gogoproto.moretags) = 'form:"resource_type" validate:"required"'];
+	//资源url链接
+	string resource_url = 4 [(gogoproto.moretags) = 'form:"resource_url" validate:"required"'];
+	//资源开发者回调字段，长度不得超过2048字节
+	string callback_data = 5;
+}
+
+message UploadResourceResponse{
+	//抖音错误码
+	int32 err_no = 1;
+	//抖音错误内容
+	string err_msg = 2;
+	//日志id，用于查询错误
+	string log_id = 3;
+
+	message Data {
+		//资源uri
+		string resource_uri = 1;
+	}
+	Data data = 4;
+}
+
+message QueryResourceStatusRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//资源url链接
+	string resource_url = 3 [(gogoproto.moretags) = 'form:"resource_url" validate:"required"'];
+}
+
+message QueryResourceStatusResponse{
+	//抖音错误码
+	int32 err_no = 1;
+	//抖音错误内容
+	string err_msg = 2;
+	//日志id，用于查询错误
+	string log_id = 3;
+
+	message Data {
+		//资源uri
+		string resource_uri = 1;
+		//状态1 - 上传中 2 - 上传成功 3 - 上传失败
+		int32 status = 2;
+	}
+	Data data = 4;
+}
+
+message CommonProductParams {
+	//小程序appid
+	string appid = 1 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//一级课程分类
+	int32 first_class = 2 [(gogoproto.moretags) = 'form:"first_class" validate:"required"'];
+	//二级课程分类
+	int32 second_class = 3 [(gogoproto.moretags) = 'form:"second_class" validate:"required"'];
+	//课程名称，12字节<= title字符长度 <=60字节，汉字字符占2个字节
+	string title = 4 [(gogoproto.moretags) = 'form:"title" validate:"required"'];
+	//购课须知，0 < purchase_precaution字符长度<=500字节，汉字字符占1个字节
+	string purchase_precaution = 5 [(gogoproto.moretags) = 'form:"purchase_precaution" validate:"required"'];
+	//行业类目, 枚举值 1-泛知识
+	int32 industry_type = 6 [(gogoproto.moretags) = 'form:"industry_type" validate:"required"'];
+	//课程履约列表，uri需要调用上传资源接口成功后获取
+	//要求：
+	//列表中的课程履约内容顺序需要与页面中展示顺序一致
+	//0< 列表长度 <=2000
+	repeated ProductFulfillmentLst product_fulfillment_lst = 7 [(gogoproto.moretags) = 'form:"product_fulfillment_lst" validate:"required"'];
+
+	/**
+	价格单位为分，必须为整形，不能带小数
+	real_price 与 range_min_price，range_max_price 互斥
+	real_price 与 range_min_price，range_max_price 必选其中一项填写
+	价格大小限制关系: 0 < real_price <= price <= 1000000，0 < range_min_price <= price <= range_max_price <= 1000000
+	接入交易系统后，提单页价格以 price 参数为准
+	 */
+	PriceInfo price_info = 8 [(gogoproto.moretags) = 'form:"price_info" validate:"required"'];
+	/**
+	抖音视频挂载的小程序页面路径列表，0< 列表长度 <= 500，需要包括此课程的所有路径，只有在该列表中的路径才能在抖音视频锚点处挂载，要求每个课程都拥有小程序内唯一course_id，不可重复，具体值的选择及唯一化由开发者实现，此外，由path和query所形成的完整路径也必须唯一，course_id长度1～128字节，path长度1～255字节
+*注意：需保证此页面路径对应小程序页面真实有效，否则禁入
+	 */
+	repeated PathInfoLst path_info_lst = 9 [(gogoproto.moretags) = 'form:"path_info_lst" validate:"required"'];
+
+	//商品详情列表，0< 列表长度 <= 2000，列表中的商品详情顺序需要与小程序页面中展示顺序一致
+	repeated ProductDetailLst product_detail_lst = 10 [(gogoproto.moretags) = 'form:"product_detail_lst" validate:"required"'];
+
+	//锚点信息
+	AnchorInfo anchor_info = 11 [(gogoproto.moretags) = 'form:"anchor_info" validate:"required"'];
+	//开发者回调，<= 1024byte
+	string callback_data = 12;
+	//课程图片uri，需要调用资源上传接口获取，开头为"tos-cn-i-b2i6zad4el/"（资源类型编码：31）
+	string product_img_uri = 13 [(gogoproto.moretags) = 'form:"product_img_uri" validate:"required"'];
+	//赠品信息，种类数量限制<=8
+	repeated GiftInfo gifts = 14;
+
+}
+
+message ProductFulfillmentLst{
+	message FulfillmentContent {
+		//履约文件资源uri，需要调用上传课程资源接口上传后获得，当履约类型不为文字或富文本时必填
+		string fulfillment_uri = 1;
+		//文字内容，当履约类型为文字，图文和富文本时必填，0< text字符长度 < 100000字节，中文占1个字符
+		string text = 2;
+		//履约内容名称，0< 字符长度 <= 100字节，中文占1个字符
+		string name = 3 [(gogoproto.moretags) = 'form:"name" validate:"required"'];
+	}
+	FulfillmentContent fulfillment_content = 1 [(gogoproto.moretags) = 'form:"fulfillment_content" validate:"required"'];
+	/**
+	视频 1 课程资源上传接口上传
+	音频 2 课程资源上传接口上传
+	图片 3 课程资源上传接口上传
+	文字 4 功能接口字段中直接携带上传
+	图文 5 课程资源上传接口上传
+	富文本 6 功能接口字段中直接携带上传
+	Pdf文档 7 课程资源上传接口上传
+	Office文档 8 课程资源上传接口上传
+	 */
+	int32 fulfillment_type = 2 [(gogoproto.moretags) = 'form:"fulfillment_type" validate:"required"'];
+}
+
+message PriceInfo {
+	//价格粒度单位，比如50元/节，这里填"节"，目前统一写"节"
+	string unit = 1 [(gogoproto.moretags) = 'form:"unit" validate:"required"'];
+	//交易系统提单页价格，0< price <= 1000000
+	int32 price = 2 [(gogoproto.moretags) = 'form:"price" validate:"required"'];
+	//real_price与价格区间不同时出现，且<= price
+	int32 real_price = 3;
+	//0< range_min_price <= 1000000
+	int32 range_min_price = 4;
+	//0<=range_max_price <= 1000000
+	int32 range_max_price = 5;
+}
+
+message PathInfoLst {
+	//课程商品详情页路径，没有前导的'/'，0< path字符长度 <= 255字节
+	string path = 1 [(gogoproto.moretags) = 'form:"path" validate:"required"'];
+	/**
+	课程商品详情页路径query参数
+	0< key字符长度 <= 64字节
+	0< value字符长度 <= 128字节
+	0<"course_id"对应值长度<=128
+	 */
+	map<string ,string> query = 2;
+}
+
+message ProductDetailLst{
+	//文字和图文类型必填，0< text字符长度 <= 10000字节，汉字占1个字符，该字段仅用于填写文字内容，富文本内容请在在填写在rich_text.text字段
+	string text = 1;
+	//图片和图文类型必填，uri需要调用上传课程资源接口成功后获取
+	string img_uri = 2;
+	//富文本类型必填，字符不要做转义，需要符合富文本格式，0< text字符长度 <= 100000字节，汉字占1个字符
+	RichText rich_text = 3;
+	message RichText{
+		//富文本字符串，字符不要做转义，需要符合富文本格式，0< 字符长度 <= 100000字节，汉字占1个字符
+		string text = 1 [(gogoproto.moretags) = 'form:"text" validate:"required"'];
+	}
+}
+
+message AnchorInfo{
+	/**
+	视频锚点信息，0< anchor_title字符长度 <= 24字节，汉字占2个字符
+	{"anchor_title": "示例锚点标题"}
+	 */
+	map <string , string> video_anchor_info = 1;
+}
+
+message GiftInfo{
+	//赠品类型，枚举值
+	//1：实物赠品，需要物流，
+	//2：虚拟赠品，线上赠送
+	int32 type = 1 [(gogoproto.moretags) = 'form:"type" validate:"required"'];
+	//赠品名
+	int32 name = 2 [(gogoproto.moretags) = 'form:"name" validate:"required"'];
+	//赠品数量
+	int32 num = 3 [(gogoproto.moretags) = 'form:"num" validate:"required"'];
+	//赠品展示图
+	//数量限制<=8，单个长度限制<=256字节
+	repeated string pics = 4;
+	//赠品退还策略, 详见下方send_back_policy
+	//{"send_back_on_refund": 0,"policy_desc": "退款可不退赠品"}
+	map <string,string> send_back_policy = 5;
+}
+
+message CourseParams{
+	//老师id，需要通过角色系统入驻获取实体id，需要完成整体入驻授权流程，并为老师角色的实体才能使用(老师id和机构id必填其中一个)
+	string teacher_id = 1;
+	//机构id，需要调用角色系统入驻获取实体id，需要完成整体入驻授权流程，并为机构角色的实体才能使用
+	string institution_id = 2;
+	//课程节数，0< course_num <= 10000
+	int32 course_num = 3 [(gogoproto.moretags) = 'form:"course_num" validate:"required"'];
+
+	message RefundLabel {
+		//退款标签类型，枚举值，建议选择3
+		int32 type = 1 [(gogoproto.moretags) = 'form:"type" validate:"required"'];
+		//「xx天未学可退」标签，其中「xx」为填写的天数，0< day <= 100 (若type=1则必填。待废弃)
+		//{"day:7}
+		map <string , int32> day_before_use_info = 2;
+		//「学习进度不足xx%可退」标签，
+		//0<= rest_percent <= 100，当rest_percent=0或100时标签和其他情况不同:
+		//0: 「不支持退款」
+		//100: 「随时可退」 (若type=2则必填。待废弃)
+		//{"rest_percent":80}
+		map <string, int32> rest_not_learn_info = 4;
+		//固定退款标签id，可以通过查询可选择的退款标签接口查询退款标签的 (若type=3则必填。)
+		int32 fixed = 5;
+	}
+	//退款标签，详见下方refund_label参数介绍
+	RefundLabel refund_label = 4 [(gogoproto.moretags) = 'form:"refund_label" validate:"required"'];
+
+	message UseLabel {
+		//「yyyy-mm-dd前有效」使用标签日期，格式必须为"yyyy-mm-dd"
+		string valid_date = 1;
+		//valid_date与dynamic_valid_date必填一个，若都填，则valid_date生效，都不填为【购买后永久有效】
+		//动态有效期，计算从下单开始后xx天/xx月/xx年；年、月、日只能有一个非零。
+		//{"dynamic_valid_date": {"year": 0,"month": 0,"day": 0}
+		map <string , int32> dynamic_valid_date = 2;
+	}
+
+	//使用标签，若不填写则默认为【购买后永久有效】
+	UseLabel  use_label = 5 [(gogoproto.moretags) = 'form:"use_label" validate:"required"'];
+	//课程开始时间，毫秒时间戳，0< start_timestamp < end_timestamp
+	int32 start_timestamp = 6;
+	//课程结束时间，毫秒时间戳，0< start_timestamp < end_timestamp
+	int32 end_timestamp = 7;
+}
+
+message AddRequest{
+	//小程序access_token
+	string access_token = 1 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//商品类型，枚举值 1: 课程
+	int32 product_type = 2 [(gogoproto.moretags) = 'form:"product_type" validate:"required"'];
+	//商品通用参数
+	CommonProductParams common_product_params = 3 [(gogoproto.moretags) = 'form:"common_product_params" validate:"required"'];
+	//课程参数，当商品类型为课程(product_type=1)时必填
+	CourseParams course_params = 4;
+}
+
+message AddResponse{
+	//抖音错误码
+	int32 err_no = 1;
+	//抖音错误内容
+	string err_msg = 2;
+	//日志id，用于查询错误
+	string log_id = 3;
+
+	message Data {
+		//课程id，课程唯一标识，返回的product_id是int64类型的，直接转换成javascript的number类型会导致精度缺失(如果id最后三位是000则大概率是精度缺失)
+		int64 product_id = 1;
+		//audit_id用于定位课程审核情况
+		string audit_id = 2;
+	}
+	Data data = 4;
+}
+
+message EditRequest{
+	//小程序access_token
+	string access_token = 1 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//商品类型，枚举值 1: 课程
+	int32 product_type = 2 [(gogoproto.moretags) = 'form:"product_type" validate:"required"'];
+	//需要进行修改的课程id
+	int64 product_id = 3 [(gogoproto.moretags) = 'form:"product_id" validate:"required"'];
+
+	/**
+	若仅修改以下字段，将直接免审通过，预计15 分钟后，在交易时生效。
+	path_info_lst array 抖音视频挂载的小程序页面路径列表，0< 列表长度 <= 500，详见path_info参数介绍
+	refund_label object 退款标签，详见refund_label参数介绍
+	use_label object 使用标签，详见use_label参数介绍
+	start_timestamp number 课程开始时间，毫秒时间戳，0< start_timestamp < end_timestamp
+	end_timestamp number 课程结束时间，毫秒时间戳，0< start_timestamp < end_timestamp
+	course_num number 课程节数， 0< course_num <= 10000
+	price_info object 课程价格信息，价格单位为分，免审范围：1000<= price <= 200000，1000<= real_price <= 200000，1000<= range_min_price <= 200000，1000<= range_max_price <= 200000
+价格超过范围，信息会送审
+	gift_info object 赠品信息，详见gift_info参数介绍
+	 */
+	message Product {
+		//商品通用参数
+		CommonProductParams common_product_params = 1 [(gogoproto.moretags) = 'form:"common_product_params" validate:"required"'];
+		//课程参数，当商品类型为课程(product_type=1)时必填
+		CourseParams course_params = 2;
+	}
+
+	//商品信息
+	Product product = 4 [(gogoproto.moretags) = 'form:"product" validate:"required"'];
+}
+
+message EditResponse{
+	//抖音错误码
+	int32 err_no = 1;
+	//抖音错误内容
+	string err_msg = 2;
+	//日志id，用于查询错误
+	string log_id = 3;
+	message Data {
+		//audit_id用于定位课程审核情况
+		string audit_id = 1;
+	}
+	Data data = 4;
+}
+
+message ModifyStatusRequest{
+	//小程序access_token
+	string access_token = 1 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+
+	message ProductStatusInfo {
+		//小程序id
+		string appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+		//课程id
+		int64 product_id = 2 [(gogoproto.moretags) = 'form:"product_id" validate:"required"'];
+		//课程状态，枚举型1-上架，2-下架
+		int32 status = 3 [(gogoproto.moretags) = 'form:"status" validate:"required"'];
+	}
+
+	ProductStatusInfo product_status_info =2 [(gogoproto.moretags) = 'form:"product_status_info" validate:"required"'];
+}
+
+
+message QueryProductInfo {
+
+	message ProductStatus {
+		/**
+		课程状态，枚举型针对入库课程(product_onshelf):1 - 上架，2 - 下架
+		针对审核中课程(product_reviewing):1 - 审核中，2 - 审核通过，3 - 审核不通过
+		 */
+		int32 status = 1;
+		//下架或审核不通过原因
+		string reject_reason = 2;
+		//最近一次审核ID
+		string latest_audit_id = 3;
+	}
+	message ProductOnShelfOrReviewing{
+		CommonProductParams common_product_info = 1;
+		CourseParams course_info = 2;
+		ProductStatus product_status =3;
+		int64 product_id =4;
+		int32 product_type = 5;
+	}
+	ProductOnShelfOrReviewing product_on_shelf = 1;
+	ProductOnShelfOrReviewing product_reviewing = 2;
+}
+
+message ModifyStatusResponse{
+	//抖音错误码
+	int32 err_no = 1;
+	//抖音错误内容
+	string err_msg = 2;
+	//日志id，用于查询错误
+	string log_id = 3;
+
+	message Data {
+
+	}
+
+	Data data = 4;
+}
+
+
+message QueryRequest{
+	//小程序access_token
+	string access_token = 1 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+
+	//小程序id
+	string appid = 2 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//课程id列表(单次查询不能超过 500 个课程)
+	repeated int64  product_ids= 3 [(gogoproto.moretags) = 'form:"product_ids" validate:"required"'];
+
+}
+
+
+message QueryResponse{
+	//抖音错误码
+	int32 err_no = 1;
+	//抖音错误内容
+	string err_msg = 2;
+	//日志id，用于查询错误
+	string log_id = 3;
+
+	message Data {
+		repeated QueryProductInfo products = 1;
+	}
+	Data data = 4;
+}
+
+message ModifyNoAuditRequest{
+	//小程序access_token
+	string access_token = 1 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//需要进行修改的商品id
+	int64 product_id = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//商品类型，1-课程
+	int32 product_type = 3 [(gogoproto.moretags) = 'form:"product_type" validate:"required"'];
+	//修改的商品信息
+	Product product = 4 [(gogoproto.moretags) = 'form:"product" validate:"required"'];
+	message Product {
+		//小程序id
+		string appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+		//路径信息
+		//在 query 中必须附带"course_id"字段，同一小程序中，"course_id"对应值作为课程的唯一标识，不可与其他课程重复，具体值的设定及唯一化由开发者实现，course_id 长度限制 1 ～ 128 字节,path 长度限制 1 ～ 255 字节。
+		//注意：免审接口不可修改已经存在的 path 和 course_id，只能对尚未获得 path 和 course_id 的课程进行一切路径相关参数的修改，对已存在 path 和 course_id 的课程，只能修改除这两个参数之外的路径参数，如需修改，需在修改课程接口进行。
+		repeated PathInfoLst path_info_lst = 2;
+	}
+}
+
+message ModifyNoAuditResponse{
+	//抖音错误码
+	int32 err_no = 1;
+	//抖音错误内容
+	string err_msg = 2;
+	//日志id，用于查询错误
+	string log_id = 3;
+	Data data = 4;
+	message Data {
+		string audit_id= 1;
+	}
+}
+
+
+message QueryTemplateInfoRequest{
+	//小程序access_token
+	string access_token = 1 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//小程序appid
+	string appid = 2 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+}
+
+message QueryTemplateInfoResponse{
+	//抖音错误码
+	int32 err_no = 1;
+	//抖音错误内容
+	string err_msg = 2;
+	//日志id，用于查询错误
+	string log_id = 3;
+	Data data = 4;
+	message Data {
+		//课程ID
+		int64 product_id = 1;
+		//资质ID
+		string object_id = 2;
+	}
+}
+
+message ModifyRefundRuleRequest{
+	//小程序access_token
+	string access_token = 1 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//小程序appid
+	string appid = 2 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//需要需改的商品id以及对应的规则id，1 <= len(refund_rule_map) <=50
+	map <string , int32> refund_rule_map = 3 [(gogoproto.moretags) = 'form:"refund_rule_map" validate:"required"'];
+}
+
+message ModifyRefundRuleResponse{
+	//抖音错误码
+	int32 err_no = 1;
+	//抖音错误内容
+	string err_msg = 2;
+	//日志id，用于查询错误
+	string log_id = 3;
+}
+
+message QueryRefundRuleMetaRequest{
+	//小程序access_token
+	string access_token = 1 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//小程序appid
+	string appid = 2 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+}
+
+message QueryRefundRuleMetaResponse{
+	//抖音错误码
+	int32 err_no = 1;
+	//抖音错误内容
+	string err_msg = 2;
+	//日志id，用于查询错误
+	string log_id = 3;
+
+	message RefundInfo {
+		//固定规则id
+		int32  id = 1;
+		//规则描述，用于交易提单页展示 (购后7天未学满5%可退)
+		string  desc = 2;
+		//规则详情(7日内学习时长小于课程总时长的5%（课程总时长大于10分钟的遵循此规则）)
+		string  details = 3;
+	}
+	//可选的【商品退款规则】列表
+	repeated  RefundInfo data = 4;
+
+}
+
+message QueryClassInfoRequest{
+	//小程序access_token
+	string access_token = 1 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//小程序appid
+	string appid = 2 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+}
+
+message ClassInfoDetailList{
+	//分类定义
+	string class_definition = 1;
+	//具体文档链接
+	string document_link = 2;
+	//专业认证
+	string professional_certification = 3;
+	//专业性学历
+	string professional_education = 4;
+	//行业资质提醒
+	string qualification_tip = 5;
+	//二级类目id
+	int32 second_class_id = 6;
+	//二级类目名称
+	string second_class_name = 7;
+	//特殊提醒
+	string special_tip = 8;
+	//教师资格证
+	string teacher_qualification_certificate = 9;
+}
+
+message ProductClassInfoList{
+	//一级类目id
+	int32 first_class_id = 1;
+	//一级类目名称
+	string first_class_name = 2;
+	//已入库的课程
+	repeated ClassInfoDetailList class_info_detail_list = 3;
+}
+
+message QueryClassInfoResponse{
+	//抖音错误码
+	int32 err_no = 1;
+	//抖音错误内容
+	string err_msg = 2;
+	//日志id，用于查询错误
+	string log_id = 3;
+
+	message Data {
+		repeated ProductClassInfoList product_class_info_list = 1;
+	}
+	Data data = 4;
+}
+
+//抖音-泛知识-课程库系统
+service DouyinProduct {
+
+	//【泛知识】上传课程资源
+	rpc UploadResource (UploadResourceRequest) returns (UploadResourceResponse) {
+		option (google.api.http) = {
+			post: "/douyin/product/api/upload_resource"
+		};
+	}
+
+	//【泛知识】查询课程资源上传状态
+	rpc QueryResourceStatus (QueryResourceStatusRequest) returns (QueryResourceStatusResponse) {
+		option (google.api.http) = {
+			post: "/douyin/product/api/query_resource_status"
+		};
+	}
+
+	//【泛知识】添加课程
+	rpc Add (AddRequest) returns (AddResponse) {
+		option (google.api.http) = {
+			post: "/douyin/product/api/add"
+		};
+	}
+
+	//【泛知识】修改课程
+	rpc Edit (EditRequest) returns (EditResponse) {
+		option (google.api.http) = {
+			post: "/douyin/product/api/edit"
+		};
+	}
+
+	//【泛知识】修改课程状态
+	rpc ModifyStatus (ModifyStatusRequest) returns (ModifyStatusResponse) {
+		option (google.api.http) = {
+			post: "/douyin/product/api/modify_status"
+		};
+	}
+
+	//【泛知识】查询课程
+	rpc Query (QueryRequest) returns (QueryResponse) {
+		option (google.api.http) = {
+			post: "/douyin/product/api/query"
+		};
+	}
+
+	//【泛知识】修改课程免审
+	rpc ModifyNoAudit (ModifyNoAuditRequest) returns (ModifyNoAuditResponse) {
+		option (google.api.http) = {
+			post: "/douyin/product/api/modify_no_audit"
+		};
+	}
+
+	//【泛知识】查询免审课程
+	rpc QueryTemplateInfo (QueryTemplateInfoRequest) returns (QueryTemplateInfoResponse) {
+		option (google.api.http) = {
+			post: "/douyin/product/api/query_template_info"
+		};
+	}
+
+	//【泛知识】修改商品退款规则
+	rpc ModifyRefundRule (ModifyRefundRuleRequest) returns (ModifyRefundRuleResponse) {
+		option (google.api.http) = {
+			post: "/douyin/product/api/modify_refund_rule"
+		};
+	}
+
+	//【泛知识】查询可选退款规则
+	rpc QueryRefundRuleMeta (QueryRefundRuleMetaRequest) returns (QueryRefundRuleMetaResponse) {
+		option (google.api.http) = {
+			post: "/douyin/product/api/query_refund_rule_meta"
+		};
+	}
+
+	//【泛知识】查询课程类目信息
+	rpc QueryClassInfo (QueryClassInfoRequest) returns (QueryClassInfoResponse) {
+		option (google.api.http) = {
+			post: "/douyin/product/api/query_class_info"
+		};
+	}
+
+}

@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package douyin;
+
+option go_package = "./api/douyin;douyin";
+
+message GetAccessTokenRequest{
+  //小程序appid
+  string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+  //获取 access_token 时值为 client_credential
+  string  grant_type = 2 [(gogoproto.moretags) = 'form:"grant_type" validate:"required"'];
+}
+
+message GetAccessTokenResponse{
+  //抖音错误码
+  int64 err_no = 1;
+  //抖音错误信息
+  string  err_tips = 2;
+  message Data {
+    //获取的 access_token
+    string  access_token = 1;
+    //access_token 有效时间，单位：秒
+    int64 expires_in = 2;
+  }
+  Data data = 3;
+}
+
+//抖音-接口调用凭证
+service DouyinAccessToken {
+
+  //access_token 是小程序的全局唯一调用凭据，开发者调用小程序支付时需要使用 access_token。access_token 的有效期为 2 个小时，需要定时刷新 access_token，重复获取会导致之前一次获取的 access_token 的有效期缩短为 5 分钟。
+  rpc GetAccessToken (GetAccessTokenRequest) returns (GetAccessTokenResponse) {
+    option (google.api.http) = {
+      post: "/douyin/apps/v2/token"
+    };
+  }
+}

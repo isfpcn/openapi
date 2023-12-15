@@ -1,0 +1,929 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "api/douyin/trade.proto",
+        "version": ""
+    },
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "consumes": [
+        "application/json",
+        "multipart/form-data"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/douyin/trade/v2/create_refund": {
+            "post": {
+                "summary": "发起退款",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.CreateREfundResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.CreateRefundRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-交易系统\n"
+                ]
+            }
+        },
+        "/douyin/trade/v2/merchant_audit_callback": {
+            "post": {
+                "summary": "同步退款审核结果",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.MerchantAuditCallbackResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.MerchantAuditCallbackRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-交易系统\n"
+                ]
+            }
+        },
+        "/douyin/trade/v2/query_cps": {
+            "post": {
+                "summary": "查询订单CPS信息。可用于判断订单是否为 CPS 订单。返回数据包含订单的支付、CPS、退款、核销等信息。",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.QueryCpsResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.QueryCpsRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-交易系统\n"
+                ]
+            }
+        },
+        "/douyin/trade/v2/query_order": {
+            "post": {
+                "summary": "查询订单信息 查询异常订单的支付状态，确认订单是否交易成功。",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.QueryOrderResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.QueryOrderRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-交易系统\n"
+                ]
+            }
+        },
+        "/douyin/trade/v2/query_refund": {
+            "post": {
+                "summary": "查询退款",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.QueryRefundResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.QueryRefundRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-交易系统\n"
+                ]
+            }
+        },
+        "/douyin/trade/v2/query_settle": {
+            "post": {
+                "summary": "//查询分账 开发者可通过此接口查询订单的分账记录。",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.QuerySettleResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.QuerySettleRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-交易系统\n"
+                ]
+            }
+        }
+    },
+    "definitions": {
+        ".douyin.CpsInfo": {
+            "type": "object",
+            "properties": {
+                "total_commission_amount": {
+                    "type": "integer",
+                    "description": "订单总佣金，单位分"
+                },
+                "cps_item_list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/.douyin.CpsItemList"
+                    },
+                    "description": "订单 CPS 信息。\n对于交易模板 1.0 和担保支付订单，Array 长度为 1"
+                }
+            }
+        },
+        ".douyin.CpsItemList": {
+            "type": "object",
+            "properties": {
+                "commission_rate": {
+                    "type": "integer",
+                    "description": "分佣比例，万分位"
+                },
+                "commission_amount": {
+                    "type": "integer",
+                    "description": "佣金，单位分"
+                },
+                "source_type": {
+                    "type": "integer",
+                    "description": "分佣类型：\n\n1：短视频\n2：直播间"
+                },
+                "item_id": {
+                    "type": "integer",
+                    "description": "短视频/直播间 ID"
+                },
+                "sell_amount": {
+                    "type": "integer",
+                    "description": "售价，单位分"
+                },
+                "status": {
+                    "type": "integer",
+                    "description": "CPS 订单状态，交易系统下为子单状态\n\n0：未支付，\n1：已支付(待使用)；\n2：已退款(不分佣)；\n3：已核销(已分佣)"
+                },
+                "item_order_id": {
+                    "type": "string",
+                    "description": "抖音开平侧的商品单号，只存在交易系统"
+                },
+                "commission_user_nickname": {
+                    "type": "string",
+                    "description": "达人抖音昵称"
+                },
+                "commission_user_douyinid": {
+                    "type": "string",
+                    "description": "达人抖音号"
+                }
+            }
+        },
+        ".douyin.CreateREfundData": {
+            "type": "object",
+            "properties": {
+                "refund_id": {
+                    "type": "string",
+                    "description": "抖音开放平台交易系统内部退款单号"
+                },
+                "refund_audit_deadline": {
+                    "type": "integer",
+                    "description": "退款审核的最后期限，13 位 unix 时间戳，精度：毫秒 通常是3天(从退款发起时间开始算)"
+                }
+            }
+        },
+        ".douyin.CreateREfundResponse": {
+            "type": "object",
+            "properties": {
+                "err_no": {
+                    "type": "integer",
+                    "description": "抖音错误码"
+                },
+                "err_tips": {
+                    "type": "string",
+                    "description": "抖音错误信息"
+                },
+                "resp_extra": {
+                    "$ref": "#/definitions/.douyin.CreateREfundResponse.Resp"
+                },
+                "data": {
+                    "$ref": "#/definitions/.douyin.CreateREfundData"
+                }
+            }
+        },
+        ".douyin.CreateREfundResponse.Resp": {
+            "type": "object",
+            "properties": {
+                "logid": {
+                    "type": "string"
+                }
+            },
+            "description": "log"
+        },
+        ".douyin.CreateRefundRequest": {
+            "type": "object",
+            "properties": {
+                "appid": {
+                    "type": "string",
+                    "description": "小程序appid"
+                },
+                "out_order_no": {
+                    "type": "string",
+                    "description": "开发者侧订单号，长度 \u003c= 64 byte"
+                },
+                "out_refund_no": {
+                    "type": "string",
+                    "description": "开发者侧退款单号，长度 \u003c= 64 byte"
+                },
+                "cp_extra": {
+                    "type": "string",
+                    "description": "开发者自定义透传字段，不支持二进制，长度 \u003c= 2048 byte"
+                },
+                "order_entry_schema": {
+                    "$ref": "#/definitions/.douyin.OrderEntrySchema",
+                    "description": "退款单的跳转的 schema"
+                },
+                "notify_url": {
+                    "type": "string",
+                    "description": "退款结果通知地址，必须是 HTTPS 类型，若不填，默认使用在抖音开放平台-小程序应用详情-能力-支付页面设置的支付回调地址。"
+                },
+                "item_order_detail": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/.douyin.ItemOrderDetail"
+                    },
+                    "description": "需要发起退款的商品单信息，数组长度\u003c100\n注意：交易系统订单必传"
+                },
+                "refund_total_amount": {
+                    "type": "integer",
+                    "description": "退款总金额，单位分   担保交易订单必传     交易系统订单不能传该字段"
+                }
+            },
+            "required": [
+                "appid",
+                "out_order_no",
+                "out_refund_no",
+                "order_entry_schema"
+            ]
+        },
+        ".douyin.Data": {
+            "type": "object",
+            "properties": {
+                "order_id": {
+                    "type": "string",
+                    "description": "抖音开平侧订单号"
+                },
+                "out_order_no": {
+                    "type": "string",
+                    "description": "开发者侧订单号，与 order_id一一对应"
+                },
+                "payment_info": {
+                    "$ref": "#/definitions/.douyin.PaymentInfo",
+                    "description": "CPS 订单支付相关信息"
+                },
+                "cps_info": {
+                    "$ref": "#/definitions/.douyin.CpsInfo",
+                    "description": "CPS 相关信息"
+                },
+                "refund_info": {
+                    "type": "string",
+                    "description": "CPS 订单已退款记录信息"
+                },
+                "delivery_info": {
+                    "type": "string",
+                    "description": "CPS 订单已核销记录信息"
+                }
+            }
+        },
+        ".douyin.ItemOrderDetail": {
+            "type": "object",
+            "properties": {
+                "item_order_id": {
+                    "type": "string",
+                    "description": "抖音开平侧的商品单号"
+                },
+                "refund_amount": {
+                    "type": "integer",
+                    "description": "该商品单退款金额，单位[分]"
+                }
+            }
+        },
+        ".douyin.MerchantAuditCallbackRequest": {
+            "type": "object",
+            "properties": {
+                "appid": {
+                    "type": "string",
+                    "description": "小程序appid"
+                },
+                "out_refund_no": {
+                    "type": "string",
+                    "description": "开发者侧退款单号，长度 \u003c= 64 byte"
+                },
+                "refund_audit_status": {
+                    "type": "integer",
+                    "description": "审核状态  1：同意退款 2：不同意退款"
+                },
+                "deny_message": {
+                    "type": "string",
+                    "description": "不同意退款信息(不同意退款时必填)，长度 \u003c= 512 byte"
+                }
+            },
+            "required": [
+                "appid",
+                "out_refund_no",
+                "refund_audit_status"
+            ]
+        },
+        ".douyin.MerchantAuditCallbackResponse": {
+            "type": "object",
+            "properties": {
+                "err_no": {
+                    "type": "integer",
+                    "description": "抖音错误码"
+                },
+                "err_tips": {
+                    "type": "string",
+                    "description": "抖音错误信息"
+                }
+            }
+        },
+        ".douyin.MerchantAuditDetail": {
+            "type": "object",
+            "properties": {
+                "refund_audit_deadline": {
+                    "type": "integer",
+                    "description": "退款审核的最后期限，过期无需审核，自动退款，13 位 unix 时间戳，精度：毫秒"
+                },
+                "audit_status": {
+                    "type": "string",
+                    "description": "退款审核状态：\nINIT：初始化\nTOAUDIT：待审核\nAGREE：同意\nDENY：拒绝\nOVERTIME：超时未审核自动同意"
+                },
+                "deny_message": {
+                    "type": "string",
+                    "description": "不同意退款信息，长度 \u003c= 512 byte"
+                }
+            }
+        },
+        ".douyin.OrderEntrySchema": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "订单详情页路径，没有前导的/，该字段不能为空，长度 \u003c= 512byte"
+                },
+                "params": {
+                    "type": "string",
+                    "description": "路径参数，自定义的 json 结构，序列化成字符串存入该字段，平台不限制，但是写入的内容需要能够保证生成访问订单详情的 schema 能正确跳转到小程序内部的订单详情页，长度 \u003c= 512byte"
+                }
+            },
+            "required": [
+                "path"
+            ]
+        },
+        ".douyin.PaymentInfo": {
+            "type": "object",
+            "properties": {
+                "total_fee": {
+                    "type": "integer",
+                    "description": "订单实际支付金额，单位分"
+                },
+                "order_status": {
+                    "type": "string",
+                    "description": "订单状态， INIT：初始状态 PROCESS：订单处理中 SUCCESS：成功 FAIL：失败 TIMEOUT：用户超时未支付"
+                },
+                "pay_time": {
+                    "type": "string",
+                    "description": "支付时间，格式：2021-12-12 00:00:00"
+                },
+                "pay_channel": {
+                    "type": "integer",
+                    "description": "支付渠道枚举：//1：微信，//2：支付宝//10: 抖音支付"
+                },
+                "channel_pay_id": {
+                    "type": "integer",
+                    "description": "渠道支付单号，如微信的支付单号"
+                },
+                "seller_uid": {
+                    "type": "integer",
+                    "description": "卖家商户号 id"
+                },
+                "cp_extra": {
+                    "type": "integer",
+                    "description": "预下单时开发者定义的透传信息"
+                },
+                "message": {
+                    "type": "integer",
+                    "description": "结果描述信息，如失败原因"
+                }
+            }
+        },
+        ".douyin.QueryCpsRequest": {
+            "type": "object",
+            "properties": {
+                "order_id": {
+                    "type": "string",
+                    "description": "order_id 与 out_order_no 二选一 抖音开平内部交易订单号，该单号通过预下单回调传给开发者服务，长度 \u003c 64byte。"
+                },
+                "out_order_no": {
+                    "type": "string",
+                    "description": "开发者系统生成的订单号，与唯一 order_id 关联，长度 \u003c 64byte"
+                },
+                "appid": {
+                    "type": "string",
+                    "description": "小程序appid"
+                }
+            },
+            "required": [
+                "appid"
+            ]
+        },
+        ".douyin.QueryCpsResponse": {
+            "type": "object",
+            "properties": {
+                "err_no": {
+                    "type": "integer",
+                    "description": "抖音错误码"
+                },
+                "err_tips": {
+                    "type": "string",
+                    "description": "抖音错误信息"
+                },
+                "resp_extra": {
+                    "$ref": "#/definitions/.douyin.QueryCpsResponse.resp"
+                },
+                "data": {
+                    "$ref": "#/definitions/.douyin.Data",
+                    "description": "CPS 订单相关信息"
+                }
+            }
+        },
+        ".douyin.QueryCpsResponse.resp": {
+            "type": "object",
+            "properties": {
+                "logid": {
+                    "type": "string"
+                }
+            },
+            "description": "log"
+        },
+        ".douyin.QueryOrderRequest": {
+            "type": "object",
+            "properties": {
+                "order_id": {
+                    "type": "string",
+                    "description": "order_id 与 out_order_no 二选一 抖音开平内部交易订单号，该单号通过预下单回调传给开发者服务，长度 \u003c 64byte。"
+                },
+                "out_order_no": {
+                    "type": "string",
+                    "description": "开发者系统生成的订单号，与唯一 order_id 关联，长度 \u003c 64byte"
+                },
+                "appid": {
+                    "type": "string",
+                    "description": "小程序appid"
+                }
+            },
+            "required": [
+                "appid"
+            ]
+        },
+        ".douyin.QueryOrderResponse": {
+            "type": "object",
+            "properties": {
+                "err_no": {
+                    "type": "integer",
+                    "description": "抖音错误码"
+                },
+                "err_tips": {
+                    "type": "string",
+                    "description": "抖音错误信息"
+                },
+                "resp_extra": {
+                    "$ref": "#/definitions/.douyin.QueryOrderResponse.Resp"
+                },
+                "data": {
+                    "$ref": "#/definitions/.douyin.QuqeyOrderData"
+                }
+            }
+        },
+        ".douyin.QueryOrderResponse.Resp": {
+            "type": "object",
+            "properties": {
+                "logid": {
+                    "type": "string"
+                }
+            },
+            "description": "log"
+        },
+        ".douyin.QueryRefundData": {
+            "type": "object",
+            "properties": {
+                "refund_list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/.douyin.RefundList"
+                    }
+                }
+            }
+        },
+        ".douyin.QueryRefundRequest": {
+            "type": "object",
+            "properties": {
+                "refund_id": {
+                    "type": "string",
+                    "description": "refund_id , out_refund_no , order_id 三选一，不能都不选。\norder_id维度的不兼容老退款单查询，只支持查询交易系统的退款。查询返回的结果数限制50条\n抖音开平内部交易退款单号，长度 \u003c=  64byte"
+                },
+                "refund_id": {
+                    "type": "string",
+                    "description": "开发者系统生成的退款单号，长度 \u003c=  64byte"
+                },
+                "refund_id": {
+                    "type": "string",
+                    "description": "抖音开平内部交易订单号，  长度 \u003c=  64byte"
+                },
+                "appid": {
+                    "type": "string",
+                    "description": "小程序appid"
+                }
+            },
+            "required": [
+                "appid"
+            ]
+        },
+        ".douyin.QueryRefundResponse": {
+            "type": "object",
+            "properties": {
+                "err_no": {
+                    "type": "integer",
+                    "description": "抖音错误码"
+                },
+                "err_tips": {
+                    "type": "string",
+                    "description": "抖音错误信息"
+                },
+                "resp_extra": {
+                    "$ref": "#/definitions/.douyin.QueryRefundResponse.Resp"
+                },
+                "data": {
+                    "$ref": "#/definitions/.douyin.QueryRefundData"
+                }
+            }
+        },
+        ".douyin.QueryRefundResponse.Resp": {
+            "type": "object",
+            "properties": {
+                "logid": {
+                    "type": "string"
+                }
+            },
+            "description": "log"
+        },
+        ".douyin.QuerySettleData": {
+            "type": "object",
+            "properties": {
+                "out_order_no": {
+                    "type": "string",
+                    "description": "开发者侧交易订单 id，长度 \u003c= 64 字节，由数字、ASCII 字符组成"
+                },
+                "out_settle_no": {
+                    "type": "string",
+                    "description": "开发者侧分账单 id，长度 \u003c= 64字节，由数字、ASCII 字符组成"
+                },
+                "order_id": {
+                    "type": "string",
+                    "description": "抖音开平侧交易订单 id，长度 \u003c= 64 字节，由数字、ASCII 字符组成"
+                },
+                "settle_id": {
+                    "type": "string",
+                    "description": "抖音开平侧分账单id，长度 \u003c= 64 字节，由数字、ASCII 字符组成"
+                },
+                "item_order_id": {
+                    "type": "string",
+                    "description": "抖音开平侧item单 id，长度 \u003c= 64 字节，由数字、ASCII 字符组成，按券分账时该字段不为空"
+                },
+                "settle_amount": {
+                    "type": "integer",
+                    "description": "分账金额，单位分"
+                },
+                "settle_status": {
+                    "type": "string",
+                    "description": "分账状态：INIT：初始化 PROCESSING：处理中 SUCCESS：处理成功 FAIL：处理失败"
+                },
+                "settle_detail": {
+                    "type": "string",
+                    "description": "分账详情"
+                },
+                "settle_time": {
+                    "type": "integer",
+                    "description": "分账时间，13 位时间戳，单位毫秒"
+                },
+                "rake": {
+                    "type": "integer",
+                    "description": "手续费，单位分"
+                },
+                "commission": {
+                    "type": "integer",
+                    "description": "佣金，单位分"
+                },
+                "cp_extra": {
+                    "type": "string",
+                    "description": "开发者自定义透传字段，长度 \u003c= 2048 字节，不支持二进制数据"
+                },
+                "inner_settle_id": {
+                    "type": "string",
+                    "description": "用于退分账场景，对应退分账接口文档中settle_no，长度\u003c= 64字节"
+                }
+            }
+        },
+        ".douyin.QuerySettleRequest": {
+            "type": "object",
+            "properties": {
+                "out_order_no": {
+                    "type": "string",
+                    "description": "以上 4 个参数选填一个，查询优先级：settle_id \u003e order_id \u003e out_settle_no \u003e out_order_no。例如：请求填写了settle_id 和 order_id，服务只会按 settle_id 来查询，忽略 order_id 。如果未查询到结果，会返回空数组。\n注意：对于担保交易订单，如果需要根据 order_id/out_order_no 查询订单的分账记录，建议使用 order_id（抖音开平侧支付单 id 查询），若使用 out_order_no 可能存在查询不到的情况。\n开发者侧订单 id，长度 \u003c= 64 字节"
+                },
+                "out_settle_no": {
+                    "type": "string",
+                    "description": "开发者侧分账单 id，长度 \u003c= 64字节"
+                },
+                "order_id": {
+                    "type": "string",
+                    "description": "抖音开平侧订单 id，长度 \u003c= 64字节"
+                },
+                "settle_id": {
+                    "type": "string",
+                    "description": "抖音开平侧分账单 id，长度 \u003c= 64字节"
+                },
+                "appid": {
+                    "type": "string",
+                    "description": "小程序appid"
+                }
+            },
+            "required": [
+                "appid"
+            ]
+        },
+        ".douyin.QuerySettleResponse": {
+            "type": "object",
+            "properties": {
+                "err_no": {
+                    "type": "integer",
+                    "description": "抖音错误码"
+                },
+                "err_tips": {
+                    "type": "string",
+                    "description": "抖音错误信息"
+                },
+                "resp_extra": {
+                    "$ref": "#/definitions/.douyin.QuerySettleResponse.Resp"
+                },
+                "data": {
+                    "$ref": "#/definitions/.douyin.QuerySettleData"
+                }
+            }
+        },
+        ".douyin.QuerySettleResponse.Resp": {
+            "type": "object",
+            "properties": {
+                "logid": {
+                    "type": "string"
+                }
+            },
+            "description": "log"
+        },
+        ".douyin.QuqeyOrderData": {
+            "type": "object",
+            "properties": {
+                "order_id": {
+                    "type": "string",
+                    "description": "抖音开平侧订单号"
+                },
+                "out_order_no": {
+                    "type": "string",
+                    "description": "开发者侧订单号，与 order_id 一一对应"
+                },
+                "refund_amount": {
+                    "type": "integer",
+                    "description": "已退款金额，单位分"
+                },
+                "settle_amount": {
+                    "type": "integer",
+                    "description": "已分账金额，单位分"
+                },
+                "total_fee": {
+                    "type": "integer",
+                    "description": "订单实际支付金额，单位[分]"
+                },
+                "order_status": {
+                    "type": "string",
+                    "description": "订单状态， INIT： 初始状态 PROCESS： 订单处理中 SUCCESS：成功 FAIL：失败 TIMEOUT：用户超时未支付"
+                },
+                "pay_time": {
+                    "type": "string",
+                    "description": "支付时间，格式：2021-12-12 00:00:00"
+                },
+                "pay_channel": {
+                    "type": "integer",
+                    "description": "支付渠道枚举 1：微信， 2：支付宝 10：抖音支付"
+                },
+                "channel_pay_id": {
+                    "type": "string",
+                    "description": "渠道支付单号，如微信的支付单号"
+                },
+                "seller_uid": {
+                    "type": "string",
+                    "description": "卖家商户号 id"
+                },
+                "item_id": {
+                    "type": "string",
+                    "description": "视频id"
+                },
+                "cp_extra": {
+                    "type": "string",
+                    "description": "预下单时开发者定义的透传信息"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "结果描述信息，如失败原因"
+                },
+                "payment_order_id": {
+                    "type": "string",
+                    "description": "担保支付单 id"
+                },
+                "delivery_type": {
+                    "type": "integer",
+                    "description": "订单核销类型：\n0: 非闭环核销，开发者自行处理券码生成及展示，通过 push_delivery 接口推送核销状态。\n1: 闭环核销，开平负责生券，开发者使用核销组件展示，使用验券准备和验券接口核销。"
+                }
+            }
+        },
+        ".douyin.RefundList": {
+            "type": "object",
+            "properties": {
+                "refund_id": {
+                    "type": "string",
+                    "description": "系统退款单号，开放平台生成的退款单号"
+                },
+                "out_refund_no": {
+                    "type": "string",
+                    "description": "开发者系统生成的退款单号，与抖音开平退款单号 refund_id 唯一关联"
+                },
+                "refund_total_amount": {
+                    "type": "integer",
+                    "description": "退款金额，单位[分]"
+                },
+                "refund_status": {
+                    "type": "string",
+                    "description": "退款状态 退款中- PROCESSING 已退款- SUCCESS 退款失败- FAIL"
+                },
+                "refund_at": {
+                    "type": "integer",
+                    "description": "退款时间，13 位毫秒时间戳，只有已退款才有退款时间"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "退款结果信息，非商家拒绝退款导致的退款失败，可以通过该字段了解退款失败原因"
+                },
+                "order_id": {
+                    "type": "string",
+                    "description": "系统订单信息，开放平台生成的订单号"
+                },
+                "item_order_detail": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/.douyin.ItemOrderDetail"
+                    },
+                    "description": "商品单信息 (交易系统订单退款才有的信息)"
+                },
+                "merchant_audit_detail": {
+                    "$ref": "#/definitions/.douyin.MerchantAuditDetail",
+                    "description": "退款审核信息 (交易系统订单退款才有的信息)"
+                },
+                "create_at": {
+                    "type": "integer",
+                    "description": "退款创建时间，13 位毫秒时间戳"
+                },
+                "refund_source": {
+                    "type": "integer",
+                    "description": "退款来源，仅交易2.0退款有来源，老的担保交易/1.0订单可能没有记录来源\n1: 用户发起退款\n2: 开放者发起退款\n3: 自动退款\n4: 抖音客服退款\n5: 预约失败自动发起退款\n6: 开发者拒绝接单退款\n7: 后约单触发先买单退款"
+                }
+            }
+        }
+    }
+}

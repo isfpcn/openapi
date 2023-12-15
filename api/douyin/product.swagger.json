@@ -1,0 +1,1507 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "api/douyin/product.proto",
+        "version": ""
+    },
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "consumes": [
+        "application/json",
+        "multipart/form-data"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/douyin/product/api/add": {
+            "post": {
+                "summary": "【泛知识】添加课程",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.AddResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.AddRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-泛知识-课程库系统\n"
+                ]
+            }
+        },
+        "/douyin/product/api/edit": {
+            "post": {
+                "summary": "【泛知识】修改课程",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.EditResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.EditRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-泛知识-课程库系统\n"
+                ]
+            }
+        },
+        "/douyin/product/api/modify_no_audit": {
+            "post": {
+                "summary": "【泛知识】修改课程免审",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.ModifyNoAuditResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.ModifyNoAuditRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-泛知识-课程库系统\n"
+                ]
+            }
+        },
+        "/douyin/product/api/modify_refund_rule": {
+            "post": {
+                "summary": "【泛知识】修改商品退款规则",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.ModifyRefundRuleResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.ModifyRefundRuleRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-泛知识-课程库系统\n"
+                ]
+            }
+        },
+        "/douyin/product/api/modify_status": {
+            "post": {
+                "summary": "【泛知识】修改课程状态",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.ModifyStatusResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.ModifyStatusRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-泛知识-课程库系统\n"
+                ]
+            }
+        },
+        "/douyin/product/api/query": {
+            "post": {
+                "summary": "【泛知识】查询课程",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.QueryResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.QueryRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-泛知识-课程库系统\n"
+                ]
+            }
+        },
+        "/douyin/product/api/query_class_info": {
+            "post": {
+                "summary": "【泛知识】查询课程类目信息",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.QueryClassInfoResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.QueryClassInfoRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-泛知识-课程库系统\n"
+                ]
+            }
+        },
+        "/douyin/product/api/query_refund_rule_meta": {
+            "post": {
+                "summary": "【泛知识】查询可选退款规则",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.QueryRefundRuleMetaResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.QueryRefundRuleMetaRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-泛知识-课程库系统\n"
+                ]
+            }
+        },
+        "/douyin/product/api/query_resource_status": {
+            "post": {
+                "summary": "【泛知识】查询课程资源上传状态",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.QueryResourceStatusResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.QueryResourceStatusRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-泛知识-课程库系统\n"
+                ]
+            }
+        },
+        "/douyin/product/api/query_template_info": {
+            "post": {
+                "summary": "【泛知识】查询免审课程",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.QueryTemplateInfoResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.QueryTemplateInfoRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-泛知识-课程库系统\n"
+                ]
+            }
+        },
+        "/douyin/product/api/upload_resource": {
+            "post": {
+                "summary": "【泛知识】上传课程资源",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.UploadResourceResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.UploadResourceRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-泛知识-课程库系统\n"
+                ]
+            }
+        }
+    },
+    "definitions": {
+        ".douyin.AddRequest": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string",
+                    "description": "小程序access_token"
+                },
+                "product_type": {
+                    "type": "integer",
+                    "description": "商品类型，枚举值 1: 课程"
+                },
+                "common_product_params": {
+                    "$ref": "#/definitions/.douyin.CommonProductParams",
+                    "description": "商品通用参数"
+                },
+                "course_params": {
+                    "$ref": "#/definitions/.douyin.CourseParams",
+                    "description": "课程参数，当商品类型为课程(product_type=1)时必填"
+                }
+            },
+            "required": [
+                "access_token",
+                "product_type",
+                "common_product_params"
+            ]
+        },
+        ".douyin.AddResponse": {
+            "type": "object",
+            "properties": {
+                "err_no": {
+                    "type": "integer",
+                    "description": "抖音错误码"
+                },
+                "err_msg": {
+                    "type": "string",
+                    "description": "抖音错误内容"
+                },
+                "log_id": {
+                    "type": "string",
+                    "description": "日志id，用于查询错误"
+                },
+                "data": {
+                    "$ref": "#/definitions/.douyin.AddResponse.Data"
+                }
+            }
+        },
+        ".douyin.AddResponse.Data": {
+            "type": "object",
+            "properties": {
+                "product_id": {
+                    "type": "integer",
+                    "description": "课程id，课程唯一标识，返回的product_id是int64类型的，直接转换成javascript的number类型会导致精度缺失(如果id最后三位是000则大概率是精度缺失)"
+                },
+                "audit_id": {
+                    "type": "string",
+                    "description": "audit_id用于定位课程审核情况"
+                }
+            }
+        },
+        ".douyin.AnchorInfo": {
+            "type": "object",
+            "properties": {
+                "video_anchor_info": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "*\n视频锚点信息，0\u003c anchor_title字符长度 \u003c= 24字节，汉字占2个字符\n{\"anchor_title\": \"示例锚点标题\"}"
+                }
+            }
+        },
+        ".douyin.ClassInfoDetailList": {
+            "type": "object",
+            "properties": {
+                "class_definition": {
+                    "type": "string",
+                    "description": "分类定义"
+                },
+                "document_link": {
+                    "type": "string",
+                    "description": "具体文档链接"
+                },
+                "professional_certification": {
+                    "type": "string",
+                    "description": "专业认证"
+                },
+                "professional_education": {
+                    "type": "string",
+                    "description": "专业性学历"
+                },
+                "qualification_tip": {
+                    "type": "string",
+                    "description": "行业资质提醒"
+                },
+                "second_class_id": {
+                    "type": "integer",
+                    "description": "二级类目id"
+                },
+                "second_class_name": {
+                    "type": "string",
+                    "description": "二级类目名称"
+                },
+                "special_tip": {
+                    "type": "string",
+                    "description": "特殊提醒"
+                },
+                "teacher_qualification_certificate": {
+                    "type": "string",
+                    "description": "教师资格证"
+                }
+            }
+        },
+        ".douyin.CommonProductParams": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string",
+                    "description": "小程序appid"
+                },
+                "first_class": {
+                    "type": "integer",
+                    "description": "一级课程分类"
+                },
+                "second_class": {
+                    "type": "integer",
+                    "description": "二级课程分类"
+                },
+                "title": {
+                    "type": "string",
+                    "description": "课程名称，12字节\u003c= title字符长度 \u003c=60字节，汉字字符占2个字节"
+                },
+                "purchase_precaution": {
+                    "type": "string",
+                    "description": "购课须知，0 \u003c purchase_precaution字符长度\u003c=500字节，汉字字符占1个字节"
+                },
+                "industry_type": {
+                    "type": "integer",
+                    "description": "行业类目, 枚举值 1-泛知识"
+                },
+                "product_fulfillment_lst": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/.douyin.ProductFulfillmentLst"
+                    },
+                    "description": "课程履约列表，uri需要调用上传资源接口成功后获取\n要求：\n列表中的课程履约内容顺序需要与页面中展示顺序一致\n0\u003c 列表长度 \u003c=2000"
+                },
+                "price_info": {
+                    "$ref": "#/definitions/.douyin.PriceInfo",
+                    "description": "*\n价格单位为分，必须为整形，不能带小数\nreal_price 与 range_min_price，range_max_price 互斥\nreal_price 与 range_min_price，range_max_price 必选其中一项填写\n价格大小限制关系: 0 \u003c real_price \u003c= price \u003c= 1000000，0 \u003c range_min_price \u003c= price \u003c= range_max_price \u003c= 1000000\n接入交易系统后，提单页价格以 price 参数为准"
+                },
+                "path_info_lst": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/.douyin.PathInfoLst"
+                    },
+                    "description": "*\n抖音视频挂载的小程序页面路径列表，0\u003c 列表长度 \u003c= 500，需要包括此课程的所有路径，只有在该列表中的路径才能在抖音视频锚点处挂载，要求每个课程都拥有小程序内唯一course_id，不可重复，具体值的选择及唯一化由开发者实现，此外，由path和query所形成的完整路径也必须唯一，course_id长度1～128字节，path长度1～255字节\n注意：需保证此页面路径对应小程序页面真实有效，否则禁入"
+                },
+                "product_detail_lst": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/.douyin.ProductDetailLst"
+                    },
+                    "description": "商品详情列表，0\u003c 列表长度 \u003c= 2000，列表中的商品详情顺序需要与小程序页面中展示顺序一致"
+                },
+                "anchor_info": {
+                    "$ref": "#/definitions/.douyin.AnchorInfo",
+                    "description": "锚点信息"
+                },
+                "callback_data": {
+                    "type": "string",
+                    "description": "开发者回调，\u003c= 1024byte"
+                },
+                "product_img_uri": {
+                    "type": "string",
+                    "description": "课程图片uri，需要调用资源上传接口获取，开头为\"tos-cn-i-b2i6zad4el/\"（资源类型编码：31）"
+                },
+                "gifts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/.douyin.GiftInfo"
+                    },
+                    "description": "赠品信息，种类数量限制\u003c=8"
+                }
+            },
+            "required": [
+                "access_token",
+                "first_class",
+                "second_class",
+                "title",
+                "purchase_precaution",
+                "industry_type",
+                "product_fulfillment_lst",
+                "price_info",
+                "path_info_lst",
+                "product_detail_lst",
+                "anchor_info",
+                "product_img_uri"
+            ]
+        },
+        ".douyin.CourseParams": {
+            "type": "object",
+            "properties": {
+                "teacher_id": {
+                    "type": "string",
+                    "description": "老师id，需要通过角色系统入驻获取实体id，需要完成整体入驻授权流程，并为老师角色的实体才能使用(老师id和机构id必填其中一个)"
+                },
+                "institution_id": {
+                    "type": "string",
+                    "description": "机构id，需要调用角色系统入驻获取实体id，需要完成整体入驻授权流程，并为机构角色的实体才能使用"
+                },
+                "course_num": {
+                    "type": "integer",
+                    "description": "课程节数，0\u003c course_num \u003c= 10000"
+                },
+                "refund_label": {
+                    "$ref": "#/definitions/.douyin.CourseParams.RefundLabel",
+                    "description": "退款标签，详见下方refund_label参数介绍"
+                },
+                "use_label": {
+                    "$ref": "#/definitions/.douyin.CourseParams.UseLabel",
+                    "description": "使用标签，若不填写则默认为【购买后永久有效】"
+                },
+                "start_timestamp": {
+                    "type": "integer",
+                    "description": "课程开始时间，毫秒时间戳，0\u003c start_timestamp \u003c end_timestamp"
+                },
+                "end_timestamp": {
+                    "type": "integer",
+                    "description": "课程结束时间，毫秒时间戳，0\u003c start_timestamp \u003c end_timestamp"
+                }
+            },
+            "required": [
+                "course_num",
+                "refund_label",
+                "use_label"
+            ]
+        },
+        ".douyin.CourseParams.RefundLabel": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "integer",
+                    "description": "退款标签类型，枚举值，建议选择3"
+                },
+                "day_before_use_info": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    },
+                    "description": "「xx天未学可退」标签，其中「xx」为填写的天数，0\u003c day \u003c= 100 (若type=1则必填。待废弃)\n{\"day:7}"
+                },
+                "rest_not_learn_info": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    },
+                    "description": "「学习进度不足xx%可退」标签，\n0\u003c= rest_percent \u003c= 100，当rest_percent=0或100时标签和其他情况不同:\n0: 「不支持退款」\n100: 「随时可退」 (若type=2则必填。待废弃)\n{\"rest_percent\":80}"
+                },
+                "fixed": {
+                    "type": "integer",
+                    "description": "固定退款标签id，可以通过查询可选择的退款标签接口查询退款标签的 (若type=3则必填。)"
+                }
+            },
+            "required": [
+                "type"
+            ]
+        },
+        ".douyin.CourseParams.UseLabel": {
+            "type": "object",
+            "properties": {
+                "valid_date": {
+                    "type": "string",
+                    "description": "「yyyy-mm-dd前有效」使用标签日期，格式必须为\"yyyy-mm-dd\""
+                },
+                "dynamic_valid_date": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    },
+                    "description": "valid_date与dynamic_valid_date必填一个，若都填，则valid_date生效，都不填为【购买后永久有效】\n动态有效期，计算从下单开始后xx天/xx月/xx年；年、月、日只能有一个非零。\n{\"dynamic_valid_date\": {\"year\": 0,\"month\": 0,\"day\": 0}"
+                }
+            }
+        },
+        ".douyin.EditRequest": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string",
+                    "description": "小程序access_token"
+                },
+                "product_type": {
+                    "type": "integer",
+                    "description": "商品类型，枚举值 1: 课程"
+                },
+                "product_id": {
+                    "type": "integer",
+                    "description": "需要进行修改的课程id"
+                },
+                "product": {
+                    "$ref": "#/definitions/.douyin.EditRequest.Product",
+                    "description": "商品信息"
+                }
+            },
+            "required": [
+                "access_token",
+                "product_type",
+                "product_id",
+                "product"
+            ]
+        },
+        ".douyin.EditRequest.Product": {
+            "type": "object",
+            "properties": {
+                "common_product_params": {
+                    "$ref": "#/definitions/.douyin.CommonProductParams",
+                    "description": "商品通用参数"
+                },
+                "course_params": {
+                    "$ref": "#/definitions/.douyin.CourseParams",
+                    "description": "课程参数，当商品类型为课程(product_type=1)时必填"
+                }
+            },
+            "description": "*\n若仅修改以下字段，将直接免审通过，预计15 分钟后，在交易时生效。\npath_info_lst array 抖音视频挂载的小程序页面路径列表，0\u003c 列表长度 \u003c= 500，详见path_info参数介绍\nrefund_label object 退款标签，详见refund_label参数介绍\nuse_label object 使用标签，详见use_label参数介绍\nstart_timestamp number 课程开始时间，毫秒时间戳，0\u003c start_timestamp \u003c end_timestamp\nend_timestamp number 课程结束时间，毫秒时间戳，0\u003c start_timestamp \u003c end_timestamp\ncourse_num number 课程节数， 0\u003c course_num \u003c= 10000\nprice_info object 课程价格信息，价格单位为分，免审范围：1000\u003c= price \u003c= 200000，1000\u003c= real_price \u003c= 200000，1000\u003c= range_min_price \u003c= 200000，1000\u003c= range_max_price \u003c= 200000\n价格超过范围，信息会送审\ngift_info object 赠品信息，详见gift_info参数介绍",
+            "required": [
+                "common_product_params"
+            ]
+        },
+        ".douyin.EditResponse": {
+            "type": "object",
+            "properties": {
+                "err_no": {
+                    "type": "integer",
+                    "description": "抖音错误码"
+                },
+                "err_msg": {
+                    "type": "string",
+                    "description": "抖音错误内容"
+                },
+                "log_id": {
+                    "type": "string",
+                    "description": "日志id，用于查询错误"
+                },
+                "data": {
+                    "$ref": "#/definitions/.douyin.EditResponse.Data"
+                }
+            }
+        },
+        ".douyin.EditResponse.Data": {
+            "type": "object",
+            "properties": {
+                "audit_id": {
+                    "type": "string",
+                    "description": "audit_id用于定位课程审核情况"
+                }
+            }
+        },
+        ".douyin.GiftInfo": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "integer",
+                    "description": "赠品类型，枚举值\n1：实物赠品，需要物流，\n2：虚拟赠品，线上赠送"
+                },
+                "name": {
+                    "type": "integer",
+                    "description": "赠品名"
+                },
+                "num": {
+                    "type": "integer",
+                    "description": "赠品数量"
+                },
+                "pics": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "赠品展示图\n数量限制\u003c=8，单个长度限制\u003c=256字节"
+                },
+                "send_back_policy": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "赠品退还策略, 详见下方send_back_policy\n{\"send_back_on_refund\": 0,\"policy_desc\": \"退款可不退赠品\"}"
+                }
+            },
+            "required": [
+                "type",
+                "name",
+                "num"
+            ]
+        },
+        ".douyin.ModifyNoAuditRequest": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string",
+                    "description": "小程序access_token"
+                },
+                "access_token": {
+                    "type": "integer",
+                    "description": "需要进行修改的商品id"
+                },
+                "product_type": {
+                    "type": "integer",
+                    "description": "商品类型，1-课程"
+                },
+                "product": {
+                    "$ref": "#/definitions/.douyin.ModifyNoAuditRequest.Product",
+                    "description": "修改的商品信息"
+                }
+            },
+            "required": [
+                "access_token",
+                "access_token",
+                "product_type",
+                "product"
+            ]
+        },
+        ".douyin.ModifyNoAuditRequest.Product": {
+            "type": "object",
+            "properties": {
+                "appid": {
+                    "type": "string",
+                    "description": "小程序id"
+                },
+                "path_info_lst": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/.douyin.PathInfoLst"
+                    },
+                    "description": "路径信息\n在 query 中必须附带\"course_id\"字段，同一小程序中，\"course_id\"对应值作为课程的唯一标识，不可与其他课程重复，具体值的设定及唯一化由开发者实现，course_id 长度限制 1 ～ 128 字节,path 长度限制 1 ～ 255 字节。\n注意：免审接口不可修改已经存在的 path 和 course_id，只能对尚未获得 path 和 course_id 的课程进行一切路径相关参数的修改，对已存在 path 和 course_id 的课程，只能修改除这两个参数之外的路径参数，如需修改，需在修改课程接口进行。"
+                }
+            },
+            "required": [
+                "appid"
+            ]
+        },
+        ".douyin.ModifyNoAuditResponse": {
+            "type": "object",
+            "properties": {
+                "err_no": {
+                    "type": "integer",
+                    "description": "抖音错误码"
+                },
+                "err_msg": {
+                    "type": "string",
+                    "description": "抖音错误内容"
+                },
+                "log_id": {
+                    "type": "string",
+                    "description": "日志id，用于查询错误"
+                },
+                "data": {
+                    "$ref": "#/definitions/.douyin.ModifyNoAuditResponse.Data"
+                }
+            }
+        },
+        ".douyin.ModifyNoAuditResponse.Data": {
+            "type": "object",
+            "properties": {
+                "audit_id": {
+                    "type": "string"
+                }
+            }
+        },
+        ".douyin.ModifyRefundRuleRequest": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string",
+                    "description": "小程序access_token"
+                },
+                "appid": {
+                    "type": "string",
+                    "description": "小程序appid"
+                },
+                "refund_rule_map": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    },
+                    "description": "需要需改的商品id以及对应的规则id，1 \u003c= len(refund_rule_map) \u003c=50"
+                }
+            },
+            "required": [
+                "access_token",
+                "appid",
+                "refund_rule_map"
+            ]
+        },
+        ".douyin.ModifyRefundRuleResponse": {
+            "type": "object",
+            "properties": {
+                "err_no": {
+                    "type": "integer",
+                    "description": "抖音错误码"
+                },
+                "err_msg": {
+                    "type": "string",
+                    "description": "抖音错误内容"
+                },
+                "log_id": {
+                    "type": "string",
+                    "description": "日志id，用于查询错误"
+                }
+            }
+        },
+        ".douyin.ModifyStatusRequest": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string",
+                    "description": "小程序access_token"
+                },
+                "product_status_info": {
+                    "$ref": "#/definitions/.douyin.ModifyStatusRequest.ProductStatusInfo"
+                }
+            },
+            "required": [
+                "access_token",
+                "product_status_info"
+            ]
+        },
+        ".douyin.ModifyStatusRequest.ProductStatusInfo": {
+            "type": "object",
+            "properties": {
+                "appid": {
+                    "type": "string",
+                    "description": "小程序id"
+                },
+                "product_id": {
+                    "type": "integer",
+                    "description": "课程id"
+                },
+                "status": {
+                    "type": "integer",
+                    "description": "课程状态，枚举型1-上架，2-下架"
+                }
+            },
+            "required": [
+                "appid",
+                "product_id",
+                "status"
+            ]
+        },
+        ".douyin.ModifyStatusResponse": {
+            "type": "object",
+            "properties": {
+                "err_no": {
+                    "type": "integer",
+                    "description": "抖音错误码"
+                },
+                "err_msg": {
+                    "type": "string",
+                    "description": "抖音错误内容"
+                },
+                "log_id": {
+                    "type": "string",
+                    "description": "日志id，用于查询错误"
+                },
+                "data": {
+                    "$ref": "#/definitions/.douyin.ModifyStatusResponse.Data"
+                }
+            }
+        },
+        ".douyin.ModifyStatusResponse.Data": {
+            "type": "object",
+            "properties": {}
+        },
+        ".douyin.PathInfoLst": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "课程商品详情页路径，没有前导的'/'，0\u003c path字符长度 \u003c= 255字节"
+                },
+                "query": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "*\n课程商品详情页路径query参数\n0\u003c key字符长度 \u003c= 64字节\n0\u003c value字符长度 \u003c= 128字节\n0\u003c\"course_id\"对应值长度\u003c=128"
+                }
+            },
+            "required": [
+                "path"
+            ]
+        },
+        ".douyin.PriceInfo": {
+            "type": "object",
+            "properties": {
+                "unit": {
+                    "type": "string",
+                    "description": "价格粒度单位，比如50元/节，这里填\"节\"，目前统一写\"节\""
+                },
+                "price": {
+                    "type": "integer",
+                    "description": "交易系统提单页价格，0\u003c price \u003c= 1000000"
+                },
+                "real_price": {
+                    "type": "integer",
+                    "description": "real_price与价格区间不同时出现，且\u003c= price"
+                },
+                "range_min_price": {
+                    "type": "integer",
+                    "description": "0\u003c range_min_price \u003c= 1000000"
+                },
+                "range_max_price": {
+                    "type": "integer",
+                    "description": "0\u003c=range_max_price \u003c= 1000000"
+                }
+            },
+            "required": [
+                "unit",
+                "price"
+            ]
+        },
+        ".douyin.ProductClassInfoList": {
+            "type": "object",
+            "properties": {
+                "first_class_id": {
+                    "type": "integer",
+                    "description": "一级类目id"
+                },
+                "first_class_name": {
+                    "type": "string",
+                    "description": "一级类目名称"
+                },
+                "class_info_detail_list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/.douyin.ClassInfoDetailList"
+                    },
+                    "description": "已入库的课程"
+                }
+            }
+        },
+        ".douyin.ProductDetailLst": {
+            "type": "object",
+            "properties": {
+                "text": {
+                    "type": "string",
+                    "description": "文字和图文类型必填，0\u003c text字符长度 \u003c= 10000字节，汉字占1个字符，该字段仅用于填写文字内容，富文本内容请在在填写在rich_text.text字段"
+                },
+                "img_uri": {
+                    "type": "string",
+                    "description": "图片和图文类型必填，uri需要调用上传课程资源接口成功后获取"
+                },
+                "rich_text": {
+                    "$ref": "#/definitions/.douyin.ProductDetailLst.RichText",
+                    "description": "富文本类型必填，字符不要做转义，需要符合富文本格式，0\u003c text字符长度 \u003c= 100000字节，汉字占1个字符"
+                }
+            }
+        },
+        ".douyin.ProductDetailLst.RichText": {
+            "type": "object",
+            "properties": {
+                "text": {
+                    "type": "string",
+                    "description": "富文本字符串，字符不要做转义，需要符合富文本格式，0\u003c 字符长度 \u003c= 100000字节，汉字占1个字符"
+                }
+            },
+            "required": [
+                "text"
+            ]
+        },
+        ".douyin.ProductFulfillmentLst": {
+            "type": "object",
+            "properties": {
+                "fulfillment_content": {
+                    "$ref": "#/definitions/.douyin.ProductFulfillmentLst.FulfillmentContent"
+                },
+                "fulfillment_type": {
+                    "type": "integer",
+                    "description": "*\n视频 1 课程资源上传接口上传\n音频 2 课程资源上传接口上传\n图片 3 课程资源上传接口上传\n文字 4 功能接口字段中直接携带上传\n图文 5 课程资源上传接口上传\n富文本 6 功能接口字段中直接携带上传\nPdf文档 7 课程资源上传接口上传\nOffice文档 8 课程资源上传接口上传"
+                }
+            },
+            "required": [
+                "fulfillment_content",
+                "fulfillment_type"
+            ]
+        },
+        ".douyin.ProductFulfillmentLst.FulfillmentContent": {
+            "type": "object",
+            "properties": {
+                "fulfillment_uri": {
+                    "type": "string",
+                    "description": "履约文件资源uri，需要调用上传课程资源接口上传后获得，当履约类型不为文字或富文本时必填"
+                },
+                "text": {
+                    "type": "string",
+                    "description": "文字内容，当履约类型为文字，图文和富文本时必填，0\u003c text字符长度 \u003c 100000字节，中文占1个字符"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "履约内容名称，0\u003c 字符长度 \u003c= 100字节，中文占1个字符"
+                }
+            },
+            "required": [
+                "name"
+            ]
+        },
+        ".douyin.QueryClassInfoRequest": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string",
+                    "description": "小程序access_token"
+                },
+                "appid": {
+                    "type": "string",
+                    "description": "小程序appid"
+                }
+            },
+            "required": [
+                "access_token",
+                "appid"
+            ]
+        },
+        ".douyin.QueryClassInfoResponse": {
+            "type": "object",
+            "properties": {
+                "err_no": {
+                    "type": "integer",
+                    "description": "抖音错误码"
+                },
+                "err_msg": {
+                    "type": "string",
+                    "description": "抖音错误内容"
+                },
+                "log_id": {
+                    "type": "string",
+                    "description": "日志id，用于查询错误"
+                },
+                "data": {
+                    "$ref": "#/definitions/.douyin.QueryClassInfoResponse.Data"
+                }
+            }
+        },
+        ".douyin.QueryClassInfoResponse.Data": {
+            "type": "object",
+            "properties": {
+                "product_class_info_list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/.douyin.ProductClassInfoList"
+                    }
+                }
+            }
+        },
+        ".douyin.QueryProductInfo": {
+            "type": "object",
+            "properties": {
+                "product_on_shelf": {
+                    "$ref": "#/definitions/.douyin.QueryProductInfo.ProductOnShelfOrReviewing"
+                },
+                "product_reviewing": {
+                    "$ref": "#/definitions/.douyin.QueryProductInfo.ProductOnShelfOrReviewing"
+                }
+            }
+        },
+        ".douyin.QueryProductInfo.ProductOnShelfOrReviewing": {
+            "type": "object",
+            "properties": {
+                "common_product_info": {
+                    "$ref": "#/definitions/.douyin.CommonProductParams"
+                },
+                "course_info": {
+                    "$ref": "#/definitions/.douyin.CourseParams"
+                },
+                "product_status": {
+                    "$ref": "#/definitions/.douyin.QueryProductInfo.ProductStatus"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "product_type": {
+                    "type": "integer"
+                }
+            }
+        },
+        ".douyin.QueryProductInfo.ProductStatus": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "integer",
+                    "description": "*\n课程状态，枚举型针对入库课程(product_onshelf):1 - 上架，2 - 下架\n针对审核中课程(product_reviewing):1 - 审核中，2 - 审核通过，3 - 审核不通过"
+                },
+                "reject_reason": {
+                    "type": "string",
+                    "description": "下架或审核不通过原因"
+                },
+                "latest_audit_id": {
+                    "type": "string",
+                    "description": "最近一次审核ID"
+                }
+            }
+        },
+        ".douyin.QueryRefundRuleMetaRequest": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string",
+                    "description": "小程序access_token"
+                },
+                "appid": {
+                    "type": "string",
+                    "description": "小程序appid"
+                }
+            },
+            "required": [
+                "access_token",
+                "appid"
+            ]
+        },
+        ".douyin.QueryRefundRuleMetaResponse": {
+            "type": "object",
+            "properties": {
+                "err_no": {
+                    "type": "integer",
+                    "description": "抖音错误码"
+                },
+                "err_msg": {
+                    "type": "string",
+                    "description": "抖音错误内容"
+                },
+                "log_id": {
+                    "type": "string",
+                    "description": "日志id，用于查询错误"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/.douyin.QueryRefundRuleMetaResponse.RefundInfo"
+                    },
+                    "description": "可选的【商品退款规则】列表"
+                }
+            }
+        },
+        ".douyin.QueryRefundRuleMetaResponse.RefundInfo": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "固定规则id"
+                },
+                "desc": {
+                    "type": "string",
+                    "description": "规则描述，用于交易提单页展示 (购后7天未学满5%可退)"
+                },
+                "details": {
+                    "type": "string",
+                    "description": "规则详情(7日内学习时长小于课程总时长的5%（课程总时长大于10分钟的遵循此规则）)"
+                }
+            }
+        },
+        ".douyin.QueryRequest": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string",
+                    "description": "小程序access_token"
+                },
+                "appid": {
+                    "type": "string",
+                    "description": "小程序id"
+                },
+                "product_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "description": "课程id列表(单次查询不能超过 500 个课程)"
+                }
+            },
+            "required": [
+                "access_token",
+                "appid",
+                "product_ids"
+            ]
+        },
+        ".douyin.QueryResourceStatusRequest": {
+            "type": "object",
+            "properties": {
+                "appid": {
+                    "type": "string",
+                    "description": "小程序appid"
+                },
+                "access_token": {
+                    "type": "string",
+                    "description": "小程序access_token"
+                },
+                "resource_url": {
+                    "type": "string",
+                    "description": "资源url链接"
+                }
+            },
+            "required": [
+                "appid",
+                "access_token",
+                "resource_url"
+            ]
+        },
+        ".douyin.QueryResourceStatusResponse": {
+            "type": "object",
+            "properties": {
+                "err_no": {
+                    "type": "integer",
+                    "description": "抖音错误码"
+                },
+                "err_msg": {
+                    "type": "string",
+                    "description": "抖音错误内容"
+                },
+                "log_id": {
+                    "type": "string",
+                    "description": "日志id，用于查询错误"
+                },
+                "data": {
+                    "$ref": "#/definitions/.douyin.QueryResourceStatusResponse.Data"
+                }
+            }
+        },
+        ".douyin.QueryResourceStatusResponse.Data": {
+            "type": "object",
+            "properties": {
+                "resource_uri": {
+                    "type": "string",
+                    "description": "资源uri"
+                },
+                "status": {
+                    "type": "integer",
+                    "description": "状态1 - 上传中 2 - 上传成功 3 - 上传失败"
+                }
+            }
+        },
+        ".douyin.QueryResponse": {
+            "type": "object",
+            "properties": {
+                "err_no": {
+                    "type": "integer",
+                    "description": "抖音错误码"
+                },
+                "err_msg": {
+                    "type": "string",
+                    "description": "抖音错误内容"
+                },
+                "log_id": {
+                    "type": "string",
+                    "description": "日志id，用于查询错误"
+                },
+                "data": {
+                    "$ref": "#/definitions/.douyin.QueryResponse.Data"
+                }
+            }
+        },
+        ".douyin.QueryResponse.Data": {
+            "type": "object",
+            "properties": {
+                "products": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/.douyin.QueryProductInfo"
+                    }
+                }
+            }
+        },
+        ".douyin.QueryTemplateInfoRequest": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string",
+                    "description": "小程序access_token"
+                },
+                "appid": {
+                    "type": "string",
+                    "description": "小程序appid"
+                }
+            },
+            "required": [
+                "access_token",
+                "appid"
+            ]
+        },
+        ".douyin.QueryTemplateInfoResponse": {
+            "type": "object",
+            "properties": {
+                "err_no": {
+                    "type": "integer",
+                    "description": "抖音错误码"
+                },
+                "err_msg": {
+                    "type": "string",
+                    "description": "抖音错误内容"
+                },
+                "log_id": {
+                    "type": "string",
+                    "description": "日志id，用于查询错误"
+                },
+                "data": {
+                    "$ref": "#/definitions/.douyin.QueryTemplateInfoResponse.Data"
+                }
+            }
+        },
+        ".douyin.QueryTemplateInfoResponse.Data": {
+            "type": "object",
+            "properties": {
+                "product_id": {
+                    "type": "integer",
+                    "description": "课程ID"
+                },
+                "object_id": {
+                    "type": "string",
+                    "description": "资质ID"
+                }
+            }
+        },
+        ".douyin.UploadResourceRequest": {
+            "type": "object",
+            "properties": {
+                "appid": {
+                    "type": "string",
+                    "description": "小程序appid"
+                },
+                "access_token": {
+                    "type": "string",
+                    "description": "小程序access_token"
+                },
+                "resource_type": {
+                    "type": "integer",
+                    "description": "*\n商品详情图片 1 \u003c= 50MB jpeg、jpg、png\n商品视频履约内容 2 \u003c= 5GB mp4、mpeg、mov\n商品音频履约内容 3 \u003c= 5GB mp3、wav、m4a\n商品图片履约内容 4 \u003c= 50MB jpeg、jpg、png\n商品pdf履约内容 5 \u003c= 5GB pdf\n商品office履约内容 6 \u003c= 5GB doc、docx、xls、xlsx、ppt、pptx\n\n老师身份证照片 21 \u003c= 50MB jpeg、jpg、png\n机构法人身份证照 22 \u003c= 50MB jpeg、jpg、png\n老师资质照 23 \u003c= 50MB jpeg、jpg、png\n机构资质照片 24 \u003c= 50MB jpeg、jpg、png\n机构logo照片 25 \u003c= 50MB jpeg、jpg、png\n\n课程展示图片 31 \u003c= 5MB jpeg、jpg、png\n老师展示图片 32 \u003c= 5MB jpeg、jpg、png\n机构展示图片 33 \u003c= 5MB jpeg、jpg、png"
+                },
+                "resource_url": {
+                    "type": "string",
+                    "description": "资源url链接"
+                },
+                "callback_data": {
+                    "type": "string",
+                    "description": "资源开发者回调字段，长度不得超过2048字节"
+                }
+            },
+            "required": [
+                "appid",
+                "access_token",
+                "resource_type",
+                "resource_url"
+            ]
+        },
+        ".douyin.UploadResourceResponse": {
+            "type": "object",
+            "properties": {
+                "err_no": {
+                    "type": "integer",
+                    "description": "抖音错误码"
+                },
+                "err_msg": {
+                    "type": "string",
+                    "description": "抖音错误内容"
+                },
+                "log_id": {
+                    "type": "string",
+                    "description": "日志id，用于查询错误"
+                },
+                "data": {
+                    "$ref": "#/definitions/.douyin.UploadResourceResponse.Data"
+                }
+            }
+        },
+        ".douyin.UploadResourceResponse.Data": {
+            "type": "object",
+            "properties": {
+                "resource_uri": {
+                    "type": "string",
+                    "description": "资源uri"
+                }
+            }
+        }
+    }
+}

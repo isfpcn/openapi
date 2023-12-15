@@ -1,0 +1,33 @@
+[server]
+    http_addr = ":8081"
+    http_dump_route = true
+
+    grpc_addr = ":8085"
+
+[log]
+    log_file = "logs/log.log"
+
+[database]
+    dsn = "root:@tcp(127.0.0.1:3306)/aibit?charset=utf8mb4&parseTime=True&loc=Local"
+    max_idle_conn = 10
+    max_open_conn = 100
+    conn_max_lifetime = 3600
+    debug = true
+
+[redis]
+    address = ["127.0.0.1:6379"]
+    password = ""
+
+[douyin]
+
+[[douyin.appids]]
+    appid = "tt21e3575ebed3cbb101"
+    secret = "d0ac244506eb63695bec1ba67610ce568dac3fb3"
+    platform_public_key = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxJQgxk+B1JsftPp6kpws\nDoyUqhGMpaqmEpiFX8bvC5UfHzLnXZgvZXWeCTtzKzLBESc/gywJrAFDQ736d8JS\nuFlMeTmQXJbgqQYXuqN3b2NQR84qpUN6o2eudqONNVgdq94Tsu7ce0irug93w32H\nHFu8blDCLY2N7dam/IBJOu+ghhcs0QcZV5nxp7T8F0stAjx9nHzT9d4Nf6L4uxPk\n+Tjlte9/0T2rGqigBbDXEWqGYdau34bousPnMRT9z346lxCXhx15nHYlnECH60B2\nCwDOtuCHjnfHLw3oPrbpMbAG3ICG2xJyIoUpdX9smGkmxdj6O5P9mMBWVTjoJJwH\n8QIDAQAB\n-----END PUBLIC KEY-----"
+    application_private_key = "-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEA2vPpAzjl62irKJ5vVWudpDIQUfU8eQkE1DdDXFBTZgSM4dxv\nw37WsrckCieQVcPizZvvA0rQ5eZ6mH0S8/ZjIL1mzZ+Tj3AsPjXHAO6th09qrlWt\nZMK6SXIXNbI2OyC9VNOhyINN4mbuWTl18Nh6Z1yjpDrzJkbV8Ah97FNq5ezjLN7X\n9005Mv+2ZNP+8NdkvIbN1Dsshzf4JFFkz3NzCvnRzQroQScmHHHPb25UeaPHGszx\nBbRQAaq7+gvU0tEma85B8EBKSvkPHgUmCUggdnnyC9KGCEu6pSpHxmzI1dEYyzbV\nZHiZuBbymETTQZnqYSPsWwmPfvWzmNYIMPP/sQIDAQABAoIBAH0mdcXVu/X2+f5Z\nsSGORakYxKNUHaDBOvViMSqO71yctTpUmb2Qvn+glwUG4EVlljoYK2IiXY1LVD/d\nHfw8lSSdniliUSHn6CIW8wzhYGa7Sisj5dx2QazBfeq/VqgtaosV/J90Dgye8RYm\n9fcYhb6XASJaX6k9TAPLls6CT9PjqGQfi9+dC8u/qdVWw91KTKeT03GHibnNIKaa\n4F1RSivZ4fiQJboXGeVyg2wpmI3erLFxZ/Q9ZWtTjzh5ahCCp5iqSwaaHDi80DNu\n0HrxCQagEIdTTtJmbvO8kcHfpW9npi468GNugqxlDVvDDKiuKpNjWqRqIyBin8lf\nV3qY0sECgYEA4OqPAB/gHtiZxfij8BxAeRoCzcHZJ2PjF6xs/Sh6BumpGVfbwJr3\nETMsNJm9ERdsuJP775J86EnRG636yEkjVLptJCqgWHi9iim1jj7/VJTOj35ntuT3\n7BunsOUFrmW4zX6OdNzpMgxQbr8t7mP7hAqYJTrQSSIVUEYzJ4myTx0CgYEA+TZd\n1s75Hv6psaAYKH+WcURQJqImIeLaqz9PboMgMCXFS537a3s80f1HZy3X8EJRxg79\nObko2eUcjd9gATwmUJAnRpsHHjj0FZ0kyR6M4+J7apfjUW+q8bQaRAJHNQPIb3Ov\nhWqsedRX+/u/m5uHXFmRLSwOCGAQFntYYbFJaqUCgYA4ZlkpnNSkp4gX/ruNUGhS\nddVSJ1P+7qtZmmFSMj43UYyX0FJIwBNIet6Q6iRhDtCykFlSwBcWYLxRBpWmd8Cm\nVIFd2lqPFOfip4bhfqakXRRXI0l6sXwB9wVb9HIyQ0vOK/gpEeRgKnpY6xPnfabq\ne4WfgFoOnL9fe9sEBSFzeQKBgBdvgGWZ8x1yD10v0/XDAc/G/86SQwm+vpeKDZsz\n44wDkUkqIyGZZj/NFLDkQ8FJS01XzYJnIitTe1rwHaQgFu5OkBL4szOpYXLC41my\ncMdhXf/JJsxatvWh3TJ2EGIw5+FrPJ9MR8nxKRD+PKeSeak6lwdrdCpfdkPW95nA\nRUotAoGAXb6LjIlTBGdpzSdodH2fcX3Am0HPKbX1jMpb2d/Mg/qW70ICOsc9ybZJ\nRXS6I3+K7OfDTvtRlT0D3trooPMf50z7oECJJF8eRVxuur2pCapzErqDjibj8L3C\n/24C/Mqug+bz0MVBjOaNUqTVJEuxpRgdCwYl/uvQp60WcJiiRVg= \n-----END RSA PRIVATE KEY-----"
+    is_sandbox = true
+
+[[douyin.appids]]
+    appid = "2"
+    secret = "2"
+    is_sandbox = false

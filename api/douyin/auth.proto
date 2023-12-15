@@ -1,0 +1,933 @@
+syntax = "proto3";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package douyin;
+
+option go_package = "./api/douyin;douyin";
+
+
+enum MaterialType{
+	NORMAL = 0;
+	CARD = 1000; //身份证照片
+	TEACHER_QUALIFICATION_CERTIFICATE = 1001; //老师教师资格证
+	TEACHER_PROFESSIONAL_EDUCATION = 1002; //教师专业性学历-专业性学历
+	TEACHER_PROFESSIONAL_CERTIFICATE = 1003; //教师专业性证书-专业认证
+	TEACHER_SPECIAL_COURSE_CATEGORY_CERTIFICATION = 1004; //教师特殊课程类目认证
+	DECLARATION_OF_COOPERATION = 1005; //机构和老师之间的合作声明
+	LETTER_OF_AUTHORIZATION = 1006; //授权函
+	PHOTO_OF_INSTITUTIONAL_BUSINESS_LICENSE = 1007; //机构营业执照照片
+	PHOTO_OF_INSTITUTIONAL_LOGO = 1008; //机构logo照片
+	IMAGE_OF_INSTITUTIONAL_REGISTRATION_CERTIFICATE = 1009; //机构注册证图片
+	SERVICE_PROVIDER_COOPERATION_CASES = 1010; //服务商合作案例
+	INSTITUTIONAL_SPECIAL_COURSE_CATEGORY_CERTIFICATION = 1011; //机构特殊课程类目认证
+	TEACHERS_AVATAR_ICON = 1012; //老师在小程序的头像icon
+}
+
+
+message UploadMaterialRequest {
+	//上传的文件类型
+	MaterialType material_type = 1 [(gogoproto.moretags) = 'form:"material_type" validate:"required"'];
+	//文件资源url(http://xxxxx)
+	string  material_file = 2 [(gogoproto.moretags) = 'form:"material_file" validate:"required"'];
+	//小程序appid
+	string  appid = 3 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 4 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+}
+
+message UploadMaterialResponse{
+	int64 err_no = 1;
+	string err_tips = 2;
+	//上传成功之后的资源路径
+ 	string path = 3;
+}
+
+
+message BypartnerRequest {
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//服务商实体ID
+	string entity_id = 3 [(gogoproto.moretags) = 'form:"entity_id" validate:"required"'];
+	//实体基础认证信息
+	BypartnerBasicAuth basic_auth = 4 [(gogoproto.moretags) = 'form:"basic_auth" validate:"required"'];
+	//实体类目认证信息
+	BypartnerClassAuth class_auth = 5 [(gogoproto.moretags) = 'form:"class_auth" validate:"required"'];
+}
+
+message BypartnerBasicAuth {
+	//实体类型1: 个人2:企业
+	int32 entity_type = 1 [(gogoproto.moretags) = 'form:"entity_type" validate:"required"'];
+	/**
+	实体名称
+	实体类型为1，该字段为个人姓名，字符长度限制
+	2<= len(name) <=30（汉字占2字符）
+	实体类型为2，该字段为企业名称，字符长度限制4<=len<= 40(汉字占 2 字符)应当与营业执照上主体名称一致
+	 */
+	string entity_name =2 [(gogoproto.moretags) = 'form:"entity_name" validate:"required"'];
+	/**
+	证件照类型
+	1：身份证
+	2：营业执照
+	 */
+	int32 certificate_type = 3 [(gogoproto.moretags) = 'form:"certificate_type" validate:"required"'];
+	//实体类型为个人，参数必填
+	BypartnerPersonInfo individual =4;
+
+	//实体类型为企业，参数必填
+	BypartnerBasicAuthEnterprise enterprise = 5;
+}
+
+message BypartnerPersonInfo {
+	//个人姓名，需要和身份证一致，字符长度限制
+	//2<= len(name) <=30（汉字占2字符）
+	string name = 1 [(gogoproto.moretags) = 'form:"name" validate:"required"'];
+	//身份证号码
+	string id_number = 2 [(gogoproto.moretags) = 'form:"id_number" validate:"required"'];
+	//身份证有效期
+	//示例：2034-01-09，长期有效可传：2099-12-31
+	string expire_time = 3 [(gogoproto.moretags) = 'form:"expire_time" validate:"required"'];
+	//身份证正面链接,人像面
+	string front_path = 4 [(gogoproto.moretags) = 'form:"front_path" validate:"required"'];
+	//身份反面链接,国徽面
+	string back_path = 5 [(gogoproto.moretags) = 'form:"back_path" validate:"required"'];
+}
+
+message BypartnerBasicAuthEnterprise{
+	//营业执照编号
+	string certificate_id = 1  [(gogoproto.moretags) = 'form:"certificate_id" validate:"required"'];
+	//营业执照材料信息
+	repeated BypartnerCertificateMaterials certificate_materials =2 [(gogoproto.moretags) = 'form:"certificate_materials" validate:"required"'];
+	//法人信息
+	BypartnerPersonInfo legal_person = 3 [(gogoproto.moretags) = 'form:"certificate_materials" validate:"required"'];
+}
+
+message BypartnerCertificateMaterials{
+	//材料类型，目前支持的类型见上传资料接口
+	MaterialType material_type = 1 [(gogoproto.moretags) = 'form:"material_type" validate:"required"'];
+	//材料过期时间，示例：2029-09-10
+	string material_expiretime = 2 [(gogoproto.moretags) = 'form:"material_expiretime" validate:"required"'];
+	//材料链接，字符串数组
+	repeated string material_paths =3 [(gogoproto.moretags) = 'form:"material_paths" validate:"required"'];
+}
+
+message BypartnerClassAuth{
+	//行业编码，目前仅支持泛知识，对应编码为10000
+	int32 industry_code = 1 [(gogoproto.moretags) = 'form:"industry_code" validate:"required"'];
+	//行业类目
+	BypartnerClassAuthIndustryClass industry_class = 2 [(gogoproto.moretags) = 'form:"industry_class" validate:"required"'];
+	//行业角色
+	//1：老师
+	//2：机构
+	int32 industry_role = 3 [(gogoproto.moretags) = 'form:"industry_role" validate:"required"'];
+
+	//老师角色:老师对应的资质
+	//机构角色:机构下老师的资质信息
+	BypartnerCertificateMaterials qualifications = 4 [(gogoproto.moretags) = 'form:"qualifications" validate:"required"'];
+	//机构角色，该字段必填
+	BypartnerClassAuthInstitution institution = 5;
+	//服务商角色（industry_role=3时，该字段必填 ）。与institution字段二选一
+	BypartnerClassAuthPartner partner = 6;
+}
+
+message BypartnerClassAuthIndustryClass{
+	//一级类目
+	int32 first_class = 1 [(gogoproto.moretags) = 'form:"first_class" validate:"required"'];
+	//二级类目
+	int32 second_class = 2 [(gogoproto.moretags) = 'form:"second_class" validate:"required"'];
+	//三级类目
+	int32 third_class = 3 [(gogoproto.moretags) = 'form:"third_class" validate:"required"'];
+}
+
+message BypartnerClassAuthInstitution {
+	//机构备案名称,需要与营业执照名称一致或有名称关键词，字符长度限制4<=len<= 40(汉字占 2 字符)
+	string record_name = 1 [(gogoproto.moretags) = 'form:"record_name" validate:"required"'];
+	//机构场景类型（仅可填写"线上机构"或"线下机构"）
+	string scene_type = 2 [(gogoproto.moretags) = 'form:"scene_type" validate:"required"'];
+	//机构主体类型（仅可填"企业工商户"或"个体工商户"）
+	string subject_type = 3 [(gogoproto.moretags) = 'form:"subject_type" validate:"required"'];
+	//机构Logo图片uri，需要调用上传资源接口后获得
+	string logo_uri = 4;
+	//商标注册证图片uri，若机构名称与机构logo一致性差，则需提供，需要调用上传后获得
+	string trademark_uri = 5;
+	//机构介绍，
+	//字符长度限制12<=len<= 200(汉字占 2 字符)
+	string desc = 6 [(gogoproto.moretags) = 'form:"desc" validate:"required"'];
+	//机构合作员工信息(泛知识行业是和机构合作的老师信息)
+	BypartnerClassAuthInstitutionEmployee employee = 7;
+}
+
+message BypartnerClassAuthInstitutionEmployee {
+	//机构员工个人身份信息
+	BypartnerPersonInfo employee_material = 1 [(gogoproto.moretags) = 'form:"employee_material" validate:"required"'];
+	//机构和员工合作协议
+	BypartnerCertificateMaterials cooperation_agreement = 2 [(gogoproto.moretags) = 'form:"cooperation_agreement" validate:"required"'];
+}
+
+message AuthError {
+	//抖音错误码
+	int32 err_code = 1;
+	//抖音错误信息
+	string err_msg = 2;
+}
+
+message BypartnerClassAuthPartner {
+	//企业工商户/个体工商户
+	string company_type = 1 [(gogoproto.moretags) = 'form:"qualifications" validate:"required"'];
+	//营业执照上公司地址
+	string company_addr = 2 [(gogoproto.moretags) = 'form:"company_addr" validate:"required"'];
+	//合作案例资料图片。
+	repeated BypartnerCertificateMaterials cooperation_cases = 3 [(gogoproto.moretags) = 'form:"cooperation_cases" validate:"required"'];
+}
+
+message BypartnerResponse {
+	//基础认证任务ID
+	string basic_auth_taskid = 1;
+	//类目认证任务ID
+	string class_auth_taskid = 2;
+	//老师实体ID
+	string entity_id = 3;
+	AuthError err = 4;
+}
+
+
+message BySelfRequest {
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//实体基础认证信息
+	BypartnerBasicAuth basic_auth = 3 [(gogoproto.moretags) = 'form:"basic_auth" validate:"required"'];
+	//实体类目认证信息
+	BypartnerClassAuth class_auth = 4 [(gogoproto.moretags) = 'form:"class_auth" validate:"required"'];
+}
+
+message BySelfResponse {
+	//基础认证任务ID
+	string basic_auth_taskid = 1;
+	//类目认证任务ID
+	string class_auth_taskid = 2;
+	//老师实体ID
+	string entity_id = 3;
+	AuthError err = 4;
+}
+
+message AddRoleRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//实体ID
+	string entity_id = 3 [(gogoproto.moretags) = 'form:"entity_id" validate:"required"'];
+	//添加角色类型（2:机构 3:代运营服务商）
+	int32 industry_role = 4 [(gogoproto.moretags) = 'form:"industry_role" validate:"required"'];
+
+	message PartnerRoleInfo{
+		//服务商基础信息
+		BypartnerClassAuthPartner partner_info = 1;
+	}
+
+	//服务商角色必填
+	PartnerRoleInfo partner_role_info = 5;
+
+	message InstitutionRoleInfo {
+		message InstitutionInfo {
+
+			string record_name = 1 [(gogoproto.moretags) = 'form:"record_name" validate:"required"'];
+			string scene_type = 2 [(gogoproto.moretags) = 'form:"scene_type" validate:"required"'];
+			string subject_type = 3 [(gogoproto.moretags) = 'form:"subject_type" validate:"required"'];
+			string logo_uri = 4;
+			string trademark_uri = 5;
+			string desc = 6 [(gogoproto.moretags) = 'form:"desc" validate:"required"'];
+		}
+		//机构基础信息
+		InstitutionInfo institution_info = 1;
+
+		message InstitutionClassInfo{
+			//类别信息
+			BypartnerClassAuthIndustryClass industry_class = 1 [(gogoproto.moretags) = 'form:"industry_class" validate:"required"'];
+			//机构合作老师信息
+			BypartnerClassAuthInstitutionEmployee employee = 2 [(gogoproto.moretags) = 'form:"employee" validate:"required"'];
+			//类别认证的材料
+			BypartnerCertificateMaterials class_material = 3 [(gogoproto.moretags) = 'form:"class_material" validate:"required"'];
+		}
+		//机构类目信息
+		InstitutionClassInfo  institution_class_info = 2;
+	}
+
+	//机构角色必填
+	InstitutionRoleInfo institution_role_info = 6;
+}
+
+message AddRoleResponse{
+	//类目认证任务ID
+	string add_role_taskid = 1;
+	AuthError err = 2;
+}
+
+message GetBasicAuthRequest {
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//实体ID
+	string entity_id = 3 [(gogoproto.moretags) = 'form:"entity_id" validate:"required"'];
+}
+
+message GetBasicAuthResponse {
+	message BasicAuth {
+		//实体类型
+		//1: 个人
+		//2:企业
+		int32 entity_type = 1;
+		/**
+		实体名称
+		实体类型为1，该字段为个人姓名，字符长度限制
+		2<= len(name) <=30（汉字占2字符）
+		实体类型为2，该字段为企业名称，字符长度限制4<=len<= 1000(汉字占 2 字符)应当与营业执照上主体名称一致
+		 */
+		string entity_name = 2;
+		/**
+		证件照类型
+		1：身份证
+		2：营业执照
+		 */
+		int32 certificate_type = 3;
+		/**
+		实体类型为个人，参数必填
+		 */
+		BypartnerPersonInfo individual = 4;
+		/**
+		实体类型为企业，参数必填
+		 */
+		BypartnerBasicAuthEnterprise enterprise = 5;
+	}
+	//基础认证信息
+	BasicAuth basic_auth  =1;
+	//认证状态 1：认证中 2：认证成功 3:认证失败
+	int32 auth_status = 2;
+	//认证原因
+	string auth_reason = 3;
+	//线上生效的资质信息
+	QualificationInfo online_qualification = 4;
+	//最近审核中的资质信息
+	QualificationInfo audit_qualification = 5;
+	AuthError err = 6;
+}
+
+message QualificationInfo {
+	//资质审核任务ID
+	string audit_taskid = 1;
+	//资质审核状态 1：审核中 2：审核成功 3：审核失败
+	string audit_status =2;
+	//资质材料
+	BypartnerCertificateMaterials qualifications =3;
+	//审核失败时原因
+	string audit_reason = 4;
+	//资质材料中最大的过期时间，示例：2022-10-10
+	string expire_time = 5;
+}
+
+message UpdateBasicAuthRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//服务商实体ID ，服务商帮助老师/代运营模式机构更新基础认证信息时必填
+	string partner_entity_id = 3;
+	//机构更新实体基础认证时必填；老师角色实体必填
+	string merchant_entity_id = 4 [(gogoproto.moretags) = 'form:"merchant_entity_id" validate:"required"'];
+	//实体名称
+	string entity_name = 5 [(gogoproto.moretags) = 'form:"entity_name" validate:"required"'];
+	//个人实体基础认证信息
+	BypartnerPersonInfo individual = 6;
+	//企业实体基础认证信息
+	BypartnerBasicAuthEnterprise enterprise = 7;
+}
+
+message UpdateBasicAuthResponse{
+	//任务ID
+	string basic_auth_taskid = 1;
+	AuthError err = 2;
+}
+
+message GetClassAuthRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+
+	//服务商实体ID
+	string  partner_entity_id = 3 [(gogoproto.moretags) = 'form:"partner_entity_id" validate:"required"'];
+	//机构添加类目认证时必填；老师角色实体必填
+	string merchant_entity_id = 4 [(gogoproto.moretags) = 'form:"merchant_entity_id" validate:"required"'];
+	//行业code，10000:泛知识
+	int32 industry_code = 5 [(gogoproto.moretags) = 'form:"industry_code" validate:"required"'];
+	//行业类目信息
+	BypartnerClassAuthIndustryClass industry_class = 6 [(gogoproto.moretags) = 'form:"industry_class" validate:"required"'];
+	//1：老师 2：机构 3：服务商
+	int32 industry_role = 7 [(gogoproto.moretags) = 'form:"industry_role" validate:"required"'];
+}
+
+
+message ClassAuthInfo {
+	//行业编码，目前仅支持泛知识，对应编码为10000
+	int32 industry_code = 1 [(gogoproto.moretags) = 'form:"industry_code" validate:"required"'];
+	//行业类目
+	BypartnerClassAuthIndustryClass industry_class = 2 [(gogoproto.moretags) = 'form:"industry_class" validate:"required"'];
+	//1：老师 2：机构 3：服务商
+	int32 industry_role = 3 [(gogoproto.moretags) = 'form:"industry_role" validate:"required"'];
+	//机构角色，该字段必填
+	BypartnerClassAuthInstitution institution = 4;
+	//服务商角色（industry_role=3时，该字段必填 ）。与institution字段二选一
+	BypartnerClassAuthPartner partner = 5;
+	//线上生效的资质信息
+	QualificationInfo online_qualification = 6;
+	//最近审核中的资质信息
+	QualificationInfo audit_qualification = 7;
+}
+
+
+message GetClassAuthResponse{
+	AuthError err = 1;
+	repeated ClassAuthInfo class_auths = 2;
+}
+
+message UpdateClassAuthRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//服务商实体ID
+	string partner_entity_id = 3;
+	//机构添加类目认证时必填；老师角色实体必填
+	string merchant_entity_id = 4 [(gogoproto.moretags) = 'form:"merchant_entity_id" validate:"required"'];
+	//行业code，10000:泛知识
+	int32 industry_code = 5 [(gogoproto.moretags) = 'form:"industry_code" validate:"required"'];
+	//行业类目信息
+	BypartnerClassAuthIndustryClass industry_class = 6 [(gogoproto.moretags) = 'form:"industry_class" validate:"required"'];
+	//1：老师 2：机构 3：服务商
+	int32 industry_role = 7 [(gogoproto.moretags) = 'form:"industry_role" validate:"required"'];
+	//实体在该类目下所需要的资质材料(机构合作老师的资质)
+	BypartnerCertificateMaterials merchant_qualifications = 8 [(gogoproto.moretags) = 'form:"merchant_qualifications" validate:"required"'];
+	//机构角色必填信息
+	BypartnerClassAuthInstitution institution = 9;
+	//服务商角色必填信息
+	BypartnerClassAuthPartner partner = 10;
+}
+
+message UpdateClassAuthResponse{
+	//当前审核中的资质信息，空代表当前没有审核中的资质信息
+	string class_auth_taskid = 1;
+	AuthError err = 2;
+}
+
+message AddClassAuthRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//服务商实体ID
+	string partner_entity_id = 3;
+	//机构添加类目认证时必填；老师角色实体必填
+	string merchant_entity_id = 4 [(gogoproto.moretags) = 'form:"merchant_entity_id" validate:"required"'];
+	//行业code，10000:泛知识
+	int32 industry_code = 5 [(gogoproto.moretags) = 'form:"industry_code" validate:"required"'];
+	//行业类目信息
+	BypartnerClassAuthIndustryClass industry_class = 6 [(gogoproto.moretags) = 'form:"industry_class" validate:"required"'];
+	//1：老师 2：机构 3：服务商
+	int32 industry_role = 7 [(gogoproto.moretags) = 'form:"industry_role" validate:"required"'];
+	//实体在该类目下所需要的资质材料(机构合作老师的资质)
+	BypartnerCertificateMaterials merchant_qualifications = 8 [(gogoproto.moretags) = 'form:"merchant_qualifications" validate:"required"'];
+	//机构角色必填信息
+	BypartnerClassAuthInstitution institution = 9;
+}
+
+message AddClassAuthResponse{
+	//类目认证任务ID
+	string class_auth_taskid = 1;
+	AuthError err = 2;
+}
+message GetAuditDetailRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//1：基础认证 2：类目认证 3：授权函认证
+	int32 auth_type = 3 [(gogoproto.moretags) = 'form:"auth_type" validate:"required"'];
+	//审核任务ID
+	string auth_taskid = 4 [(gogoproto.moretags) = 'form:"auth_taskid" validate:"required"'];
+}
+
+message GetAuditDetailResponse{
+	//资质详情
+	repeated QualificationInfo qualifications = 1;
+	AuthError err = 2;
+}
+
+message BindRoleRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//要绑定小程序的实体。（仅机构or服务商）
+	string merchant_entity_id = 3 [(gogoproto.moretags) = 'form:"merchant_entity_id" validate:"required"'];
+	//行业编码，泛知识10000
+	int32 industry_code = 4 [(gogoproto.moretags) = 'form:"industry_code" validate:"required"'];
+	//实体角色类型（ 2：机构 3：服务商）
+	int32 merchant_industry_role = 5 [(gogoproto.moretags) = 'form:"merchant_industry_role" validate:"required"'];
+}
+
+message BindRoleResponse{
+	AuthError err = 1;
+}
+
+message UnbindRoleRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//要绑定小程序的实体。（仅机构or服务商）
+	string merchant_entity_id = 3 [(gogoproto.moretags) = 'form:"merchant_entity_id" validate:"required"'];
+	//行业编码，泛知识10000
+	int32 industry_code = 4 [(gogoproto.moretags) = 'form:"industry_code" validate:"required"'];
+	//实体角色类型（ 2：机构 3：服务商）
+	int32 merchant_industry_role = 5 [(gogoproto.moretags) = 'form:"merchant_industry_role" validate:"required"'];
+}
+
+message UnbindRoleResponse{
+	AuthError err = 1;
+}
+
+message GetBindListRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+}
+
+message GetBindListResponse{
+	message BindInfoList{
+		//小程序appid
+		string  appid = 1;
+		//实体id
+		string  merchant_entity_id = 2;
+		//1:个人(泛知识行业为老师),2:自营机构,3:服务商
+		int32  industry_role = 3;
+		//10000:泛知识
+		int32  industry_code = 4;
+	}
+	//小程序绑定的所有角色
+	repeated BindInfoList bind_info_list = 1;
+	AuthError err =2;
+}
+
+message AuthRoleRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//服务商实体ID ，服务商帮助老师或代运营模式机构添加授权信息时必填（需先确保服务商实体已绑定该小程序）
+	string partner_entity_id = 3;
+	//被授权实体（如果是机构授权给自己需确保机构已绑定该小程序）
+	string merchant_entity_id = 4 [(gogoproto.moretags) = 'form:"merchant_entity_id" validate:"required"'];
+	//行业编码，泛知识10000
+	int32 industry_code = 5 [(gogoproto.moretags) = 'form:"industry_code" validate:"required"'];
+	//机构授权给自己不需要授权函
+	//其它情况授权给服务商需要授权函 len(auth_letters)=1
+	repeated BypartnerCertificateMaterials auth_letters =6;
+	//实体在小程序的权限，按照位或，1：可支付/收款权限 2：可以创建课程权限
+	int32 scope = 7;
+	//老师或机构在小程序内昵称 2<=len<=30 (中文占2个字符)
+	string nick = 8 [(gogoproto.moretags) = 'form:"nick" validate:"required"'];
+	//老师或机构在小程序内头像（需要使用上传资质材料接口）
+	string icon = 9 [(gogoproto.moretags) = 'form:"icon" validate:"required"'];
+	//老师或机构在小程序内头像（需要使用上传资质材料接口）
+	string desc = 10 [(gogoproto.moretags) = 'form:"desc" validate:"required"'];
+	//授权实体角色类型（1：老师 2：机构 ）
+	int32 merchant_industry_role= 11 [(gogoproto.moretags) = 'form:"merchant_industry_role" validate:"required"'];
+}
+
+message AuthRoleResponse{
+	//如果是机构授权自己的小程序，不用审核，该字段为空
+	string bind_taskid = 1;
+	AuthError err =2;
+}
+
+message UnauthRoleRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//服务商实体ID ，服务商帮助老师或代运营模式机构添加授权信息时必填（需先确保服务商实体已绑定该小程序）
+	string partner_entity_id = 3;
+	//被授权实体（如果是机构授权给自己需确保机构已绑定该小程序）
+	string merchant_entity_id = 4 [(gogoproto.moretags) = 'form:"merchant_entity_id" validate:"required"'];
+	//解除授权实体角色类型（1：老师 2：机构 3：服务商）
+	int32 merchant_industry_role = 5 [(gogoproto.moretags) = 'form:"merchant_industry_role" validate:"required"'];
+}
+
+
+message UnauthRoleResponse{
+	AuthError err =1;
+}
+
+message GetAppidAuthRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//服务商实体ID ，服务商帮助老师或代运营模式机构添加授权信息时必填（需先确保服务商实体已绑定该小程序）
+	string partner_entity_id = 3;
+	//实体ID
+	string merchant_entity_id = 4 [(gogoproto.moretags) = 'form:"merchant_entity_id" validate:"required"'];
+	//解除授权实体角色类型（1：老师 2：机构 3：服务商）
+	int32 merchant_industry_role = 5 [(gogoproto.moretags) = 'form:"merchant_industry_role" validate:"required"'];
+}
+
+message GetAppidAuthResponse{
+	message Data {
+		string appid = 1;
+		//线上生效的授权书信息
+		QualificationInfo online_auth_letter =2;
+		//当前审核的的授权书信息
+		QualificationInfo audit_auth_letter =3;
+		//商家在小程序下的权限，按位处理 1：可以支付/收款 2：可以上传课程库
+		int32 scope = 4;
+		//商家在小程序上的昵称
+		string nick =5;
+		//商家在小程序上的头图
+		string icon =6;
+		//商家在小程序上的介绍
+		string desc =7;
+		//认证状态 1:审核中 2:认证成功 3:认证失败
+		string auth_status =8;
+		//认证原因
+		string auth_reason =9;
+	}
+	Data data = 1;
+	AuthError err =2;
+}
+
+message UpdateAuthLetterRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//服务商实体ID ，服务商帮助老师或代运营模式机构添加授权信息时必填（需先确保服务商实体已绑定该小程序）
+	string partner_entity_id = 3;
+	//被授权实体（如果是机构授权给自己需确保机构已绑定该小程序）
+	string merchant_entity_id = 4 [(gogoproto.moretags) = 'form:"merchant_entity_id" validate:"required"'];
+	//行业编码，泛知识10000
+	int32 industry_code = 5 [(gogoproto.moretags) = 'form:"industry_code" validate:"required"'];
+	//机构授权给自己不需要授权函
+	//其它情况授权给服务商需要授权函 len(auth_letters)=1
+	repeated BypartnerCertificateMaterials auth_letters =6;
+	//实体在小程序的权限，按照位或，1：可支付/收款权限 2：可以创建课程权限
+	int32 scope = 7;
+	//老师或机构在小程序内昵称 2<=len<=30 (中文占2个字符)
+	string nick = 8 [(gogoproto.moretags) = 'form:"nick" validate:"required"'];
+	//老师或机构在小程序内头像（需要使用上传资质材料接口）
+	string icon = 9 [(gogoproto.moretags) = 'form:"icon" validate:"required"'];
+	//老师或机构在小程序内头像（需要使用上传资质材料接口）
+	string desc = 10 [(gogoproto.moretags) = 'form:"desc" validate:"required"'];
+	//授权实体角色类型（1：老师 2：机构 ）
+	int32 merchant_industry_role= 11 [(gogoproto.moretags) = 'form:"merchant_industry_role" validate:"required"'];
+}
+
+message UpdateAuthLetterResponse{
+	string audit_taskid = 1;
+	AuthError err =2;
+}
+
+message QueryMountscopeRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//被授权实体（如果是机构授权给自己需确保机构已绑定该小程序）
+	string merchant_entity_id = 3 [(gogoproto.moretags) = 'form:"merchant_entity_id" validate:"required"'];
+	//C端账户在小程序中的openid (与aweme_id必填其一，同时填入时优先取aweme_id)
+	string openid =4;
+	//抖音号(与openid必填其一，同时填入时优先取aweme_id)
+	string aweme_id =5;
+	//行业code，10000:泛知识
+	int32 industry_code = 6;
+	//1：老师 2：机构 3：服务商
+	int32 industry_role = 7;
+}
+
+message QueryMountscopeResponse{
+	//已授权能力列表
+	repeated int32 scope_list = 1;
+	//绑定状态
+	//0：绑定中
+	//1：已绑定
+	//2：已解绑/未绑定
+	int32 status = 2;
+	AuthError err = 3;
+}
+
+message EnableMountscopeRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//被授权实体（如果是机构授权给自己需确保机构已绑定该小程序）
+	string merchant_entity_id = 3 [(gogoproto.moretags) = 'form:"merchant_entity_id" validate:"required"'];
+	string partner_entity_id = 4;
+	//与mount_scope_list必填其一，同时传入时都会进行授权
+	//1短视频挂载
+	//2直播挂载
+	//3IM客服
+	//4跳转抖音号个人页
+	//5关注抖音号-弹窗
+	//6关注抖音号-卡片
+	//7私信组件
+	//8主动授权私信组件
+	//9跳转抖音直播间
+	//10直播呼吸灯组件
+	//11直播预览流组件
+	//12检查是否关注抖音号
+	int32 mount_scope = 5;
+	//取值同上mount_scope。需一次开通多个能力时可以通过该参数传入，同时传入mount_scope 与 mount_scope_list时，会合并进行授权
+	repeated int32 mount_scope_list = 6;
+	//抖音账户相关信息 (与aweme_id必填其一，同时填入时优先取aweme_id）
+	MountscopeCuser c_user = 7;
+	//抖音号(与c_user必填其一，同时填入时优先取aweme_id)
+	string aweme_id = 8;
+	//行业code，10000:泛知识
+	int32 industry_code = 9 [(gogoproto.moretags) = 'form:"industry_code" validate:"required"'];
+	//1：老师 2：机构 3：服务商
+	int32 industry_role = 10 [(gogoproto.moretags) = 'form:"industry_role" validate:"required"'];
+
+}
+
+message MountscopeCuser {
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//client_key 信息 目前为对应小程序id（appid）
+	string  client_key = 2 [(gogoproto.moretags) = 'form:"client_key" validate:"required"'];
+}
+
+message EnableMountscopeResponse{
+	AuthError err =1;
+}
+
+message UnbindAccountRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//被授权实体（如果是机构授权给自己需确保机构已绑定该小程序）
+	string merchant_entity_id = 3 [(gogoproto.moretags) = 'form:"merchant_entity_id" validate:"required"'];
+	string partner_entity_id = 4;
+
+	//抖音账户相关信息 (与aweme_id必填其一，同时填入时优先取aweme_id）
+	MountscopeCuser c_user = 5;
+	//抖音号(与c_user必填其一，同时填入时优先取aweme_id)
+	string aweme_id = 6 [(gogoproto.moretags) = 'form:"aweme_id" validate:"required"'];
+	//行业code，10000:泛知识
+	int32 industry_code = 7 [(gogoproto.moretags) = 'form:"industry_code" validate:"required"'];
+	//1：老师 2：机构 3：服务商
+	int32 industry_role = 8 [(gogoproto.moretags) = 'form:"industry_role" validate:"required"'];
+}
+
+message UnbindAccountResponse{
+	AuthError err = 1;
+}
+
+message QueryEntityInfoRequest{
+	//小程序app_id (注意该接口小程序id为下划线格式)
+	string  app_id = 1 [(gogoproto.moretags) = 'form:"app_id" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//证件ID
+	string certificate_id = 3 [(gogoproto.moretags) = 'form:"certificate_id" validate:"required"'];
+}
+
+message QueryEntityInfoResponse{
+	//角色系统的实体ID
+	string entity_id= 1;
+	AuthError err =2;
+}
+
+message QueryBindTocListRequest{
+	//小程序appid
+	string  appid = 1 [(gogoproto.moretags) = 'form:"appid" validate:"required"'];
+	//小程序access_token
+	string access_token = 2 [(gogoproto.moretags) = 'form:"access_token" validate:"required"'];
+	//被授权实体（如果是机构授权给自己需确保机构已绑定该小程序）
+	string merchant_entity_id = 3 [(gogoproto.moretags) = 'form:"merchant_entity_id" validate:"required"'];
+
+	//行业code，10000:泛知识
+	int32 industry_code = 4 [(gogoproto.moretags) = 'form:"industry_code" validate:"required"'];
+	//1：老师 2：机构 3：服务商
+	int32 industry_role = 5 [(gogoproto.moretags) = 'form:"industry_role" validate:"required"'];
+}
+
+message QueryBindTocListResponse{
+	repeated string aweme_id_list = 1;
+	AuthError err = 2;
+}
+
+//抖音-泛知识-角色系统
+service DouyinAuth {
+	//上传材料
+	rpc UploadMaterial (UploadMaterialRequest) returns (UploadMaterialResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/upload_material"
+		};
+	}
+
+	//代运营服务商帮老师或代运营模式机构入驻
+	rpc Bypartner (BypartnerRequest) returns (BypartnerResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/bypartner"
+		};
+	}
+
+	//自营机构/服务商入驻
+	rpc BySelf (BySelfRequest) returns (BySelfResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/byself"
+		};
+	}
+
+	//新增角色
+	rpc AddRole (AddRoleRequest) returns (AddRoleResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/add_role"
+		};
+	}
+
+	//查询基础认证资质
+	rpc GetBasicAuth (GetBasicAuthRequest) returns (GetBasicAuthResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/get_basic_auth"
+		};
+	}
+
+	//更新基础认证资质
+	rpc UpdateBasicAuth (UpdateBasicAuthRequest) returns (UpdateBasicAuthResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/update_basic_auth"
+		};
+	}
+
+	//查询类目认证资质
+	rpc GetClassAuth (GetClassAuthRequest) returns (GetClassAuthResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/get_class_auth"
+		};
+	}
+
+	//更新类目认证资质
+	rpc UpdateClassAuth (UpdateClassAuthRequest) returns (UpdateClassAuthResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/update_class_auth"
+		};
+	}
+
+	//添加类目认证资质
+	rpc AddClassAuth (AddClassAuthRequest) returns (AddClassAuthResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/add_class_auth"
+		};
+	}
+
+	//获取审核任务详情
+	rpc GetAuditDetail (GetAuditDetailRequest) returns (GetAuditDetailResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/get_audit_detail"
+		};
+	}
+
+	//小程序绑定角色
+	rpc BindRole (BindRoleRequest) returns (BindRoleResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/bind_role"
+		};
+	}
+
+	//小程序解除绑定角色
+	rpc UnbindRole (UnbindRoleRequest) returns (UnbindRoleResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/unbind_role"
+		};
+	}
+
+	//查询小程序已绑定的角色
+	rpc GetBindList (GetBindListRequest) returns (GetBindListResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/get_bind_list"
+		};
+	}
+
+	//角色授权小程序
+	rpc AuthRole (AuthRoleRequest) returns (AuthRoleResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/auth_role"
+		};
+	}
+
+	//解除授权小程序
+	rpc UnauthRole (UnauthRoleRequest) returns (UnauthRoleResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/unauth_role"
+		};
+	}
+
+	//查询授权小程序
+	rpc GetAppidAuth (GetAppidAuthRequest) returns (GetAppidAuthResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/get_appid_auth"
+		};
+	}
+
+	//更新授权小程序授权信息
+	rpc UpdateAuthLetter (UpdateAuthLetterRequest) returns (UpdateAuthLetterResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/update_authletter"
+		};
+	}
+
+	//查询抖音号绑定、能力授权
+	rpc QueryMountscope (QueryMountscopeRequest) returns (QueryMountscopeResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/query_mountscope"
+		};
+	}
+
+	//新增抖音号绑定、能力授权
+	rpc EnableMountscope (EnableMountscopeRequest) returns (EnableMountscopeResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/enable_mountscope"
+		};
+	}
+
+	//解除抖音号绑定、解除能力授权
+	rpc UnbindAccount (UnbindAccountRequest) returns (UnbindAccountResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/unbind_account"
+		};
+	}
+
+	//查询实体ID
+	rpc QueryEntityInfo (QueryEntityInfoRequest) returns (QueryEntityInfoResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/query_entity_info"
+		};
+	}
+
+	//查询实体已绑定抖音号列表
+	rpc query_bind_toc_list (QueryBindTocListRequest) returns (QueryBindTocListResponse) {
+		option (google.api.http) = {
+			post: "/douyin/auth/query_bind_toc_list"
+		};
+	}
+}
+

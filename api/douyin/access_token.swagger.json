@@ -1,0 +1,105 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "api/douyin/access_token.proto",
+        "version": ""
+    },
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "consumes": [
+        "application/json",
+        "multipart/form-data"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/douyin/apps/v2/token": {
+            "post": {
+                "summary": "access_token 是小程序的全局唯一调用凭据，开发者调用小程序支付时需要使用 access_token。access_token 的有效期为 2 个小时，需要定时刷新 access_token，重复获取会导致之前一次获取的 access_token 的有效期缩短为 5 分钟。",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.GetAccessTokenResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.GetAccessTokenRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-接口调用凭证\n"
+                ]
+            }
+        }
+    },
+    "definitions": {
+        ".douyin.GetAccessTokenRequest": {
+            "type": "object",
+            "properties": {
+                "appid": {
+                    "type": "string",
+                    "description": "小程序appid"
+                },
+                "grant_type": {
+                    "type": "string",
+                    "description": "获取 access_token 时值为 client_credential"
+                }
+            },
+            "required": [
+                "appid",
+                "grant_type"
+            ]
+        },
+        ".douyin.GetAccessTokenResponse": {
+            "type": "object",
+            "properties": {
+                "err_no": {
+                    "type": "integer",
+                    "description": "抖音错误码"
+                },
+                "err_tips": {
+                    "type": "string",
+                    "description": "抖音错误信息"
+                },
+                "data": {
+                    "$ref": "#/definitions/.douyin.GetAccessTokenResponse.Data"
+                }
+            }
+        },
+        ".douyin.GetAccessTokenResponse.Data": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string",
+                    "description": "获取的 access_token"
+                },
+                "expires_in": {
+                    "type": "integer",
+                    "description": "access_token 有效时间，单位：秒"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,103 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "api/douyin/client_token.proto",
+        "version": ""
+    },
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "consumes": [
+        "application/json",
+        "multipart/form-data"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/douyin/oauth/client_token": {
+            "post": {
+                "summary": "client_token 用于不需要用户授权就可以调用的接口。client_token 的有效时间为 2 个小时，重复获取 client_token 后会使上次的 client_token 失效（但有 5 分钟的缓冲时间，连续多次获取 client_token 只会保留最新的两个 client_token）",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/.douyin.GetClientTokenResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.douyin.GetClientTokenRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "抖音-交易client token调用凭证\n"
+                ]
+            }
+        }
+    },
+    "definitions": {
+        ".douyin.GetClientTokenRequest": {
+            "type": "object",
+            "properties": {
+                "client_key": {
+                    "type": "string",
+                    "description": "是应用唯一标识 aw05az2qjv******"
+                }
+            },
+            "required": [
+                "client_key"
+            ]
+        },
+        ".douyin.GetClientTokenResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/.douyin.GetClientTokenResponse.Data"
+                }
+            }
+        },
+        ".douyin.GetClientTokenResponse.Data": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string",
+                    "description": "获取的 access_token"
+                },
+                "expires_in": {
+                    "type": "integer",
+                    "description": "access_token 有效时间，单位：秒"
+                },
+                "error_code": {
+                    "type": "integer",
+                    "description": "error_code"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "错误表述"
+                }
+            }
+        }
+    }
+}
